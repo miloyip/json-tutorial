@@ -4,7 +4,7 @@
 
 摘要：设置编译环境、测试驱动、解析器主要函数及各数据结构。
 
-本文是[从零开始的 JSON 库教程]（https://zhuanlan.zhihu.com/p/22457315）的第一个单元。教程练习源代码位于 [json-tutorial](https://github.com/miloyip/json-tutorial)。
+本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/p/22457315)的第一个单元。教程练习源代码位于 [json-tutorial](https://github.com/miloyip/json-tutorial)。
 
 # JSON 是什么
 
@@ -78,7 +78,7 @@ JSON（Javascript Object Notation）是一个用于数据交换的文本格式�
 
 按 Configure，选择编译器，然后按 Generate 便会生成 Visual Studio 的 .sln 和 .vcproj 等文件。注意这个 build 目录都是生成的文件，可以随时删除，也不用上传至仓库。
 
-在 OS X 下，建议安装 brew，然后在命令行键入：
+在 OS X 下，建议安装 [Homebrew](http://brew.sh/)，然后在命令行键入：
 
 ~~~
 $ brew install cmake
@@ -138,7 +138,7 @@ typedef enum { LEPT_NULL, LEPT_FALSE, LEPT_TRUE, LEPT_NUMBER, LEPT_STRING, LEPT_
 因为 C 语言没有 C++ 的命名空间（namespace）功能，一般会使用项目的简写作为标识符的前缀。通常枚举值用全大写（如 LEPT_NULL），而类型及函数则用小写（如 lept_type）。
 
 接下来，我们声明 JSON 的数据结构。JSON 是一个树形结构，我们最终需要实现一个树的数据结构，每个节点使用 lept_value 结构体表示，我们会称它为一个 JSON 值（JSON value）。
-在此单元中，我们只需要实现 null, true 和 false 的解析，因此该结构体只需要存储一个 lept_type。
+在此单元中，我们只需要实现 null, true 和 false 的解析，因此该结构体只需要存储一个 lept_type。之后的单元会逐步加入其他数据。
 
 ~~~c
 typedef struct {
@@ -165,7 +165,7 @@ int ret = lept_parse(&v, json);
 
 返回值是以下这些枚举值，无错误会返回 LEPT_PARSE_OK，其他值在下节解释。
 
-~~~
+~~~c
 enum {
     LEPT_PARSE_OK = 0,
     LEPT_PARSE_EXPECT_VALUE,
@@ -176,18 +176,18 @@ enum {
 
 现时我们只需要一个访问结果的函数，就是获取其类型：
 
-~~~
+~~~c
 lept_type lept_get_type(const lept_value* v);
 ~~~
 
 # JSON 语法
 
-在此单元中，我们的 JSON 语法字集使用 [RFC7159](http://rfc7159.net/rfc7159) 中的 [ABNF](https://tools.ietf.org/html/rfc5234) 表示：
+下面是此单元的 JSON 语法子集，使用 [RFC7159](http://rfc7159.net/rfc7159) 中的 [ABNF](https://tools.ietf.org/html/rfc5234) 表示：
 
 ~~~
-JSON-text = value ws
+JSON-text = ws value ws
 ws = *(%x20 / %x09 / %x0A / %x0D)
-value = ws null / false / true 
+value = null / false / true 
 null  = "null"
 false = "false"
 true  = "true"
@@ -344,13 +344,14 @@ typedef struct {
 
 /* ... */
 
-/* 提示：这里应该是 JSON-text = value ws，*/
-/* 以下实现没处理 ws 和 LEPT_PARSE_ROOT_NOT_SINGULAR */
+/* 提示：这里应该是 JSON-text = ws value ws，*/
+/* 以下实现没处理最后的 ws 和 LEPT_PARSE_ROOT_NOT_SINGULAR */
 int lept_parse(lept_value* v, const char* json) {
     lept_context c;
     assert(v != NULL);
     c.json = json;
     v->type = LEPT_NULL;
+    lept_parse_whitespace(c);
     return lept_parse_value(&c, v);
 }
 ~~~
@@ -394,7 +395,6 @@ static int lept_parse_null(lept_context* c, lept_value* v) {
 
 /* value = ws null */
 static int lept_parse_value(lept_context* c, lept_value* v) {
-    lept_parse_whitespace(c);
     switch (*c->json) {
         case 'n':  return lept_parse_null(c, v);
         case '\0': return LEPT_PARSE_EXPECT_VALUE;
