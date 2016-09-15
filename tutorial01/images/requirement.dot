@@ -1,0 +1,21 @@
+digraph {
+    rankdir=LR
+    compound=true
+    fontname="Inconsolata, Consolas"
+    fontsize=10
+    margin="0,0"
+    ranksep=0.5
+    nodesep=1
+    penwidth=0.5
+    
+    node [shape=box, fontname="Inconsolata, Consolas", fontsize=10, penwidth=0.5, style=filled, colorscheme=spectral7]
+    edge [fontname="Inconsolata, Consolas", fontsize=10, penwidth=0.5]
+
+    JSON [fillcolor=6]
+    tree [fillcolor=5]
+    i [style=invis]
+
+    JSON -> tree [label="1. parse"]
+    tree -> JSON [label="3. stringify"]
+    tree -> i [label="2. access", dir=back, arrowtail=normal]
+}
