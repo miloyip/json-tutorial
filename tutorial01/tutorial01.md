@@ -280,7 +280,7 @@ int main() {
 
 ~~~
 /Users/miloyip/github/json-tutorial/tutorial01/test.c:27: expect: 0 actual: 1
-1/2 (50.00%)
+1/2 (50.00%) passed
 ~~~
 
 第一个返回 LEPT_PARSE_OK，所以是通过的。第二个测试因为 lept_parse() 没有把 v.type 改成 LEPT_NULL，造成失败。我们再实现 lept_parse() 令到它能通过测试。
