@@ -155,7 +155,7 @@ C 语言的结构体是以 struct X {} 形式声明的，定义变量时也要�
 int lept_parse(lept_value* v, const char* json);
 ~~~
 
-传入的 JSON 文本是一个 C 字符串（空结尾字符串／null-terminated string），由于我们不应该改到这个输入字符串，所以使用 const char* 类型。
+传入的 JSON 文本是一个 C 字符串（空结尾字符串／null-terminated string），由于我们不应该改动这个输入字符串，所以使用 const char* 类型。
 
 另一注意点是，传入的根节点指针 v 是由使用方负责分配的，所以一般用法是：
 ~~~c
