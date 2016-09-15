@@ -72,9 +72,11 @@ JSON（Javascript Object Notation）是一个用于数据交换的文本格式�
 
 在 Windows 下，下载安装 CMake 后，可以使用其 cmake-gui 程序：
 
-图
+![cmake-gui](images/cmake-gui.png)
 
-那么它便会生成 Visual Studio 的 .sln 和 .vcproj 等文件。
+先在 "Where is the source code" 选择 json-tutorial/tutorial01，再在 "Where to build the binary" 键入上一个目录加上 /build。
+
+按 Configure，选择编译器，然后按 Generate 便会生成 Visual Studio 的 .sln 和 .vcproj 等文件。注意这个 build 目录都是生成的文件，可以随时删除，也不用上传至仓库。
 
 在 OS X 下，建议安装 brew，然后在命令行键入：
 
@@ -83,11 +85,13 @@ $ brew install cmake
 $ cd github/json-tutorial/tutorial01
 $ mkdir build
 $ cd build
-$ cmake ..
+$ cmake -DCMAKE_BUILD_TYPE=Debug ..
 $ make
 ~~~
 
-这样会使用 GNU make 来生成项目。若你喜欢的话，CMake 也可以生成 Xcode 项目：
+这样会使用 GNU make 来生成项目，把 Debug 改成 Release 就会生成 Release 配置的 makefile。
+
+若你喜欢的话，CMake 也可以生成 Xcode 项目：
 
 ~~~
 $ cmake -G Xcode ..
