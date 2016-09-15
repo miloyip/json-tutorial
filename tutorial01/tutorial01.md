@@ -42,9 +42,9 @@ JSON（Javascript Object Notation）是一个用于数据交换的文本格式�
 * null: 表示为 null
 * boolean: 表示为 true 或 false
 * number: 一般的浮点数表示方式，在下一单元详细说明
-* string: 表示为 `"..."`
-* array: 表示为 `[ ... ]`
-* object: 表示为 `{ ... }` 
+* string: 表示为 "..."
+* array: 表示为 [ ... ]
+* object: 表示为 { ... }
 
 我们要实现的 JSON 库，主要是完成 3 个需求：
 
@@ -146,7 +146,7 @@ typedef struct {
 }lept_value;
 ~~~
 
-C 语言的结构体是以 `struct X {}` 形式声明的，定义变量时也要写成 `struct X x;`。为方便使用，上面的代码使用了 typedef。
+C 语言的结构体是以 struct X {} 形式声明的，定义变量时也要写成 struct X x;。为方便使用，上面的代码使用了 typedef。
 
 然后，我们现在只需要两个 API 函数，一个是解析 JSON：
 
@@ -154,7 +154,7 @@ C 语言的结构体是以 `struct X {}` 形式声明的，定义变量时也要
 int lept_parse(lept_value* v, const char* json);
 ~~~
 
-传入的 JSON 文本是一个 C 字符串（空结尾字符串／null-terminated string），由于我们不应该改到这个输入字符串，所以使用 `const char*` 类型。
+传入的 JSON 文本是一个 C 字符串（空结尾字符串／null-terminated string），由于我们不应该改到这个输入字符串，所以使用 const char* 类型。
 
 另一注意点是，传入的根节点指针 v 是由使用方负责分配的，所以一般用法是：
 ~~~c
@@ -193,7 +193,7 @@ false = "false"
 true  = "true"
 ~~~
 
-当中 `%xhh` 表示以 16 进制表示的字符，`/` 是多选一，`*` 是零或多个，`()` 用于分组。
+当中 %xhh 表示以 16 进制表示的字符，/ 是多选一，* 是零或多个，() 用于分组。
 
 那么第一行的意思是，JSON 文本由 3 部分组成，首先是空白（whitespace），接着是一个值，最后是空白。
 
@@ -211,7 +211,7 @@ true  = "true"
 
 # 单元测试
 
-许多同学在做练习或刷题时，都是以 printf／cout 打印结果，再用肉眼对比结果是否乎合预期。但当软件项目越来越复杂，这个做法会越来越低效。一般我们会采用自动的测试方式，例如单元测试（unit testing）。单元测试也能确保其他人修改代码后，原来的功能维持正确（这称为回归测试／regression testing）。
+许多同学在做练习题时，都是以 printf／cout 打印结果，再用肉眼对比结果是否乎合预期。但当软件项目越来越复杂，这个做法会越来越低效。一般我们会采用自动的测试方式，例如单元测试（unit testing）。单元测试也能确保其他人修改代码后，原来的功能维持正确（这称为回归测试／regression testing）。
 
 常用的单元测试框架有 xUnit 系列，如 C++ 的 [Google Test](https://github.com/google/googletest)、C# 的 [NUnit](http://www.nunit.org/)。我们为了简单起见，会编写一个极简单的单元测试方式。
 
@@ -300,8 +300,8 @@ else
 /* 预处理后 */
 
 if (cond)
-    a(); b();
-else /* <- else 缺乏对应 if */
+    a(); b(); /* b(); 在 if 之外     */
+else          /* <- else 缺乏对应 if */
     c();
 ~~~
 
@@ -344,7 +344,7 @@ typedef struct {
 
 /* ... */
 
-/* 提示：这里应该是 JSON-text = ws value ws，*/
+/* 提示：这里应该是 JSON-text = ws value ws */
 /* 以下实现没处理最后的 ws 和 LEPT_PARSE_ROOT_NOT_SINGULAR */
 int lept_parse(lept_value* v, const char* json) {
     lept_context c;
@@ -358,7 +358,7 @@ int lept_parse(lept_value* v, const char* json) {
 
 暂时我们只储存 json 字符串当前位置，之后的单元我们需要加入更多内容。
 
-lept_parse() 若失败，会把 v 设为 null 类型，所以这里先把它设为 null，让 lept_parse_value() 写入解析出来的根值。
+若 lept_parse() 失败，会把 v 设为 null 类型，所以这里先把它设为 null，让 lept_parse_value() 写入解析出来的根值。
 
 leptjson 是一个手写的递归下降解析器（recursive descent parser）。由于 JSON 语法特别简单，我们不需要写分词器（tokenizer），只需检测下一个字符，便可以知道它是哪种类型的值，然后调用相关的分析函数。对于完整的 JSON 语法，跳过空白后，只需检测当前字符：
 
@@ -411,13 +411,15 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 C 语言的标准库含有 assert() 这个宏（需 #include <assert.h>），提供断言功能。当程序以 release 配置编译时（定义了 NDEBUG 宏），assert() 不会做检测；而当在 debug 配置时（没定义 NDEBUG 宏），则会在运行时检测 assert(cond) 中的条件是否为真（非 0），断言失败会直接令程序崩溃。
 
-初使用断言的同学，可能会把有副作用的代码放在 assert() 中：
+例如上面的 lept_parse_null() 开始时，当前字符应该是 'n'，所以我们使用一个宏 EXPECT(c, ch) 进行断言，并跳到下一字符。
+
+初使用断言的同学，可能会错误地把含副作用的代码放在 assert() 中：
 
 ~~~c
 assert(x++ == 0); /* 这是错误的! */
 ~~~
 
-因为这样会导致 debug 和 release 版的行为不一样。
+这样会导致 debug 和 release 版的行为不一样。
 
 另一个问题是，初学者可能会难于分辨何时使用断言，何时处理运行时错误（如返回错误值或在 C++ 中抛出异常）。简单的答案是，如果那个错误是由于程序员错误编码所造成的（例如传入不合法的参数），那么应用断言；如果那个错误是程序员无法避免，而是由运行时的环境所造成的，就要处理运行时错误（例如开启文件失败）。
 
