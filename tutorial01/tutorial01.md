@@ -8,7 +8,7 @@
 
 # JSON 是什么
 
-JSON（Javascript Object Notation）是一个用于数据交换的文本格式，现时的标准为[ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)。
+JSON（JavaScript Object Notation）是一个用于数据交换的文本格式，现时的标准为[ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)。
 
 虽然 JSON 源至于 JavaScript 语言，但它只是一种数据格式，可用于任何编程语言。现时具类似功能的格式有 XML、YAML，当中以 JSON 的语法最为简单。
 
@@ -116,7 +116,7 @@ $ ./leptjson_test
 
 # 头文件与 API 设计
 
-C 有头文件的概念，需要使用 #include 去引入头文件中的类型声明和函数声明。但由于头文件也可以 #include 其他头文件，为避免重复引用，通常会利用宏加入 #include 防范（include guard）：
+C 语言有头文件的概念，需要使用 #include 去引入头文件中的类型声明和函数声明。但由于头文件也可以 #include 其他头文件，为避免重复声明，通常会利用宏加入 #include 防范（include guard）：
 
 ~~~c
 #ifndef LEPTJSON_H__
@@ -180,7 +180,7 @@ enum {
 lept_type lept_get_type(const lept_value* v);
 ~~~
 
-# JSON 语法
+# JSON 语法子集
 
 下面是此单元的 JSON 语法子集，使用 [RFC7159](http://rfc7159.net/rfc7159) 中的 [ABNF](https://tools.ietf.org/html/rfc5234) 表示：
 
@@ -393,7 +393,8 @@ static int lept_parse_null(lept_context* c, lept_value* v) {
     return 0;
 }
 
-/* value = ws null */
+/* value = null / false / true */
+/* 提示：下面代码没处理 false / true，将会是练习之一 */
 static int lept_parse_value(lept_context* c, lept_value* v) {
     switch (*c->json) {
         case 'n':  return lept_parse_null(c, v);
