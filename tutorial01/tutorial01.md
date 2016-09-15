@@ -17,7 +17,7 @@ JSON（JavaScript Object Notation）是一个用于数据交换的文本格式�
 ~~~js
 {
     "title": "Design Patterns",
-    "subtitle": "Elements of Reusable Object-Oriented Software"
+    "subtitle": "Elements of Reusable Object-Oriented Software",
     "author": [
         "Erich Gamma",
         "Richard Helm",
