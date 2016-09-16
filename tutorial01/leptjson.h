@@ -1,8 +1,16 @@
 #ifndef LEPTJSON_H__
 #define LEPTJSON_H__
 
-typedef enum { LEPT_NULL, LEPT_FALSE, LEPT_TRUE, LEPT_NUMBER, LEPT_STRING, LEPT_ARRAY, LEPT_OBJECT } lept_type;
+typedef enum { 
+    LEPT_NULL, 
+    LEPT_FALSE, 
+    LEPT_TRUE, 
+    LEPT_NUMBER, 
+    LEPT_STRING,
+    LEPT_ARRAY, 
+    LEPT_OBJECT } lept_type;
 
+//这个结构体的目的是什么，直接用枚举不好吗，是不是为了防止int类型转换？
 typedef struct {
     lept_type type;
 }lept_value;
