@@ -17,60 +17,45 @@ static void lept_parse_whitespace(lept_context* c)
 	c->json = p;
 }
 
-static int lept_parse_check_singular(lept_context* c)
+static int lept_helper_check_value(lept_context *c,lept_value* v, const char * expected,lept_type type)
 {
-	lept_parse_whitespace(c);
-	if (c->json[0] == '\0')
+	assert(expected != NULL);
+	EXPECT(c, expected[0]);
+	int i = 1;
+	while (expected[i] != '\0')
 	{
-		return LEPT_PARSE_OK;
+		if (c->json[i-1] != expected[i])
+		{
+			return LEPT_PARSE_INVALID_VALUE;
+		}
+		i++;
 	}
-	else
-	{
-		return LEPT_PARSE_ROOT_NOT_SINGULAR;
-	}
+	c->json += (i-1);
+	v->type = type;
+	return LEPT_PARSE_OK;
 }
+
+
 
 static int lept_parse_null(lept_context* c, lept_value* v)
 {
-	EXPECT(c, 'n');
-	if (c->json[0] != 'u' || c->json[1] != 'l' || c->json[2] != 'l')
-		return LEPT_PARSE_INVALID_VALUE;
-	c->json += 3;
-	v->type = LEPT_NULL;
-	return lept_parse_check_singular(c);
-
-
+	return lept_helper_check_value(c,v, "null",LEPT_NULL);
 }
 
 static int lept_parse_true(lept_context* c, lept_value* v)
 {
-	EXPECT(c, 't');
-	if (c->json[0] != 'r' || c->json[1] != 'u' || c->json[2] != 'e')
-	{
-		return LEPT_PARSE_INVALID_VALUE;
-	}
-	else
-	{
-		c->json += 3;
-		v->type = LEPT_TRUE;
-		return lept_parse_check_singular(c);
-	}
+	
+	return lept_helper_check_value(c,v,"true",LEPT_TRUE);
+
+	
 }
 
 static int lept_parse_false(lept_context*c, lept_value* v)
 {
-	EXPECT(c, 'f');
-	if (c->json[0] != 'a' || c->json[1] != 'l' || c->json[2] != 's' || c->json[3] != 'e')
-	{
-		return LEPT_PARSE_INVALID_VALUE;
-	}
-	else
-	{
-		c->json += 4;
-		v->type = LEPT_FALSE;
-		return lept_parse_check_singular(c);
-	}
+	return lept_helper_check_value(c, v, "false", LEPT_FALSE);
 }
+
+
 
 
 static int lept_parse_value(lept_context* c, lept_value* v)
@@ -88,11 +73,21 @@ static int lept_parse_value(lept_context* c, lept_value* v)
 int lept_parse(lept_value* v, const char* json)
 {
 	lept_context c;
+
 	assert(v != NULL);
 	c.json = json;
 	v->type = LEPT_NULL;
 	lept_parse_whitespace(&c);
-	return lept_parse_value(&c, v);
+	int ret = lept_parse_value(&c, v);
+	if (ret == LEPT_PARSE_OK)
+	{
+		lept_parse_whitespace(&c);
+		if (c.json[0] != '\0')
+		{
+			ret = LEPT_PARSE_ROOT_NOT_SINGULAR;
+		}
+	}
+	return ret;
 }
 
 lept_type lept_get_type(const lept_value* v)
