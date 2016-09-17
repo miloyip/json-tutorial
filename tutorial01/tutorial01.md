@@ -5,7 +5,7 @@
 
 摘要：设置编译环境、测试驱动、解析器主要函数及各数据结构。
 
-本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/p/22457315)的第一个单元。教程练习源代码位于 [json-tutorial](https://github.com/miloyip/json-tutorial)。
+本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第一个单元。教程练习源代码位于 [json-tutorial](https://github.com/miloyip/json-tutorial)。
 
 ## JSON 是什么
 
