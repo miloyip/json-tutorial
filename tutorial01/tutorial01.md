@@ -65,9 +65,9 @@ JSON（JavaScript Object Notation）是一个用于数据交换的文本格式�
 
 我们的 JSON 库名为 leptjson，代码文件只有 3 个：
 
-1. leptjson.h：leptjson 的头文件（header file），含有对外的类型和 API 函数声明。
-2. leptjson.c：leptjson 的实现文件（implementation file），含有内部的类型声明和函数实现。此文件会编译成库。
-3. test.c：我们使用测试驱动开发（test driven development, TDD）。此文件包含测试程序，需要链接 leptjson 库。
+1. `leptjson.h`：leptjson 的头文件（header file），含有对外的类型和 API 函数声明。
+2. `leptjson.c`：leptjson 的实现文件（implementation file），含有内部的类型声明和函数实现。此文件会编译成库。
+3. `test.c`：我们使用测试驱动开发（test driven development, TDD）。此文件包含测试程序，需要链接 leptjson 库。
 
 为了方便跨平台开发，我们会使用一个现时最流行的软件配置工具 [CMake](https://cmake.org/)。
 
@@ -99,7 +99,7 @@ $ cmake -G Xcode ..
 $ open leptjson_test.xcodeproj
 ~~~
 
-而在 Ubuntu 下，可使用 apt-get 来安装：
+而在 Ubuntu 下，可使用 `apt-get` 来安装：
 
 ~~~
 $ apt-get install cmake
@@ -117,7 +117,7 @@ $ ./leptjson_test
 
 ## 头文件与 API 设计
 
-C 语言有头文件的概念，需要使用 #include 去引入头文件中的类型声明和函数声明。但由于头文件也可以 #include 其他头文件，为避免重复声明，通常会利用宏加入 #include 防范（include guard）：
+C 语言有头文件的概念，需要使用 `#include`去引入头文件中的类型声明和函数声明。但由于头文件也可以 `#include` 其他头文件，为避免重复声明，通常会利用宏加入 include 防范（include guard）：
 
 ~~~c
 #ifndef LEPTJSON_H__
@@ -128,7 +128,7 @@ C 语言有头文件的概念，需要使用 #include 去引入头文件中的�
 #endif /* LEPTJSON_H__ */
 ~~~
 
-宏的名字必须是唯一的，通常习惯以 _H__ 作为后缀。由于 leptjson 只有一个头文件，可以简单命名为 LEPTJSON_H__。如果项目有多个文件或目录结构，可以用 项目名称_目录_文件名称_H__ 这种命名方式。
+宏的名字必须是唯一的，通常习惯以 `_H__` 作为后缀。由于 leptjson 只有一个头文件，可以简单命名为 `LEPTJSON_H__`。如果项目有多个文件或目录结构，可以用 `项目名称_目录_文件名称_H__` 这种命名方式。
 
 如前所述，JSON 中有 6 种数据类型，如果把 true 和 false 当作两个类型就是 7 种，我们为此声明一个枚举类型（enumeration type）：
 
@@ -136,9 +136,9 @@ C 语言有头文件的概念，需要使用 #include 去引入头文件中的�
 typedef enum { LEPT_NULL, LEPT_FALSE, LEPT_TRUE, LEPT_NUMBER, LEPT_STRING, LEPT_ARRAY, LEPT_OBJECT } lept_type;
 ~~~
 
-因为 C 语言没有 C++ 的命名空间（namespace）功能，一般会使用项目的简写作为标识符的前缀。通常枚举值用全大写（如 LEPT_NULL），而类型及函数则用小写（如 lept_type）。
+因为 C 语言没有 C++ 的命名空间（namespace）功能，一般会使用项目的简写作为标识符的前缀。通常枚举值用全大写（如 `LEPT_NULL`），而类型及函数则用小写（如 `lept_type`）。
 
-接下来，我们声明 JSON 的数据结构。JSON 是一个树形结构，我们最终需要实现一个树的数据结构，每个节点使用 lept_value 结构体表示，我们会称它为一个 JSON 值（JSON value）。
+接下来，我们声明 JSON 的数据结构。JSON 是一个树形结构，我们最终需要实现一个树的数据结构，每个节点使用 `lept_value` 结构体表示，我们会称它为一个 JSON 值（JSON value）。
 在此单元中，我们只需要实现 null, true 和 false 的解析，因此该结构体只需要存储一个 lept_type。之后的单元会逐步加入其他数据。
 
 ~~~c
@@ -147,7 +147,7 @@ typedef struct {
 }lept_value;
 ~~~
 
-C 语言的结构体是以 struct X {} 形式声明的，定义变量时也要写成 struct X x;。为方便使用，上面的代码使用了 typedef。
+C 语言的结构体是以 `struct X {}` 形式声明的，定义变量时也要写成 `struct X x;`。为方便使用，上面的代码使用了 `typedef`。
 
 然后，我们现在只需要两个 API 函数，一个是解析 JSON：
 
@@ -155,16 +155,17 @@ C 语言的结构体是以 struct X {} 形式声明的，定义变量时也要�
 int lept_parse(lept_value* v, const char* json);
 ~~~
 
-传入的 JSON 文本是一个 C 字符串（空结尾字符串／null-terminated string），由于我们不应该改动这个输入字符串，所以使用 const char* 类型。
+传入的 JSON 文本是一个 C 字符串（空结尾字符串／null-terminated string），由于我们不应该改动这个输入字符串，所以使用 `const char*` 类型。
 
 另一注意点是，传入的根节点指针 v 是由使用方负责分配的，所以一般用法是：
+
 ~~~c
 lept_value v;
 const char json[] = ...;
 int ret = lept_parse(&v, json);
 ~~~
 
-返回值是以下这些枚举值，无错误会返回 LEPT_PARSE_OK，其他值在下节解释。
+返回值是以下这些枚举值，无错误会返回 `LEPT_PARSE_OK`，其他值在下节解释。
 
 ~~~c
 enum {
@@ -194,7 +195,7 @@ false = "false"
 true  = "true"
 ~~~
 
-当中 %xhh 表示以 16 进制表示的字符，/ 是多选一，* 是零或多个，() 用于分组。
+当中 `%xhh` 表示以 16 进制表示的字符，`/` 是多选一，`*` 是零或多个，`()` 用于分组。
 
 那么第一行的意思是，JSON 文本由 3 部分组成，首先是空白（whitespace），接着是一个值，最后是空白。
 
@@ -206,13 +207,13 @@ true  = "true"
 
 在这个 JSON 语法子集下，我们定义 3 种错误码：
 
-* 若一个 JSON 只含有空白，传回 LEPT_PARSE_EXPECT_VALUE。
-* 若一个值之后，在空白之后还有其他字符，传回 LEPT_PARSE_ROOT_NOT_SINGULAR。
-* 若值不是那三种字面值，传回 LEPT_PARSE_INVALID_VALUE。
+* 若一个 JSON 只含有空白，传回 `LEPT_PARSE_EXPECT_VALUE`。
+* 若一个值之后，在空白之后还有其他字符，传回 `LEPT_PARSE_ROOT_NOT_SINGULAR`。
+* 若值不是那三种字面值，传回 `LEPT_PARSE_INVALID_VALUE`。
 
 ## 单元测试
 
-许多同学在做练习题时，都是以 printf／cout 打印结果，再用肉眼对比结果是否乎合预期。但当软件项目越来越复杂，这个做法会越来越低效。一般我们会采用自动的测试方式，例如单元测试（unit testing）。单元测试也能确保其他人修改代码后，原来的功能维持正确（这称为回归测试／regression testing）。
+许多同学在做练习题时，都是以 `printf`／`cout` 打印结果，再用肉眼对比结果是否乎合预期。但当软件项目越来越复杂，这个做法会越来越低效。一般我们会采用自动的测试方式，例如单元测试（unit testing）。单元测试也能确保其他人修改代码后，原来的功能维持正确（这称为回归测试／regression testing）。
 
 常用的单元测试框架有 xUnit 系列，如 C++ 的 [Google Test](https://github.com/google/googletest)、C# 的 [NUnit](http://www.nunit.org/)。我们为了简单起见，会编写一个极简单的单元测试方式。
 
@@ -229,7 +230,7 @@ TDD 是先写测试，再实现功能。好处是实现只会刚好满足测试�
 
 但无论我们是采用 TDD，或是先实现后测试，都应尽量加入足够覆盖率的单元测试。
 
-回到 leptjson 项目，test.c 包含了一个极简的单元测试框架：
+回到 leptjson 项目，`test.c` 包含了一个极简的单元测试框架：
 
 ~~~
 #include <stdio.h>
@@ -275,21 +276,21 @@ int main() {
 }
 ~~~
 
-现时只提供了一个 EXPECT_EQ_INT(expect, actual) 的宏，每次使用这个宏时，如果 expect != actual（预期值不等于实际值），便会输出错误信息。
-若按照 TDD 的步骤，我们先写一个测试，如上面的 test_parse_null()，而 lept_parse() 只返回 LEPT_PARSE_OK：
+现时只提供了一个 `EXPECT_EQ_INT(expect, actual)` 的宏，每次使用这个宏时，如果 expect != actual（预期值不等于实际值），便会输出错误信息。
+若按照 TDD 的步骤，我们先写一个测试，如上面的 `test_parse_null()`，而 `lept_parse()` 只返回 `LEPT_PARSE_OK`：
 
 ~~~
 /Users/miloyip/github/json-tutorial/tutorial01/test.c:27: expect: 0 actual: 1
 1/2 (50.00%) passed
 ~~~
 
-第一个返回 LEPT_PARSE_OK，所以是通过的。第二个测试因为 lept_parse() 没有把 v.type 改成 LEPT_NULL，造成失败。我们再实现 lept_parse() 令到它能通过测试。
+第一个返回 `LEPT_PARSE_OK`，所以是通过的。第二个测试因为 `lept_parse()` 没有把 `v.type` 改成 `LEPT_NULL`，造成失败。我们再实现 `lept_parse()` 令到它能通过测试。
 
 然而，完全按照 TDD 的步骤来开发，是会减慢开发进程。所以我个人会在这两种极端的工作方式取平衡。通常会在设计 API 后，先写部分测试代码，再写满足那些测试的实现。
 
 ## 宏的编写技巧
 
-有些同学可能不了解 EXPECT_EQ_BASE 宏的编写技巧，简单说明一下。反斜线代表该行未结束，会串接下一行。而如果宏里有多过一个语句（statement），就需要用 do { /*...*/ } while(0) 包裹成单个语句，否则会有如下的问题：
+有些同学可能不了解 `EXPECT_EQ_BASE` 宏的编写技巧，简单说明一下。反斜线代表该行未结束，会串接下一行。而如果宏里有多过一个语句（statement），就需要用 `do { /*...*/ } while(0)` 包裹成单个语句，否则会有如下的问题：
 
 ~~~c
 #define M() a(); b()
@@ -306,7 +307,7 @@ else          /* <- else 缺乏对应 if */
     c();
 ~~~
 
-只用 {} 也不行：
+只用 `{ }` 也不行：
 
 ~~~c
 #define M() { a(); b(); }
@@ -336,7 +337,7 @@ else
 
 有了 API 的设计、单元测试，终于要实现解析器了。
 
-首先为了减少解析函数之间传递多个参数，我们把这些数据都放进一个 lept_context 结构体：
+首先为了减少解析函数之间传递多个参数，我们把这些数据都放进一个 `lept_context` 结构体：
 
 ~~~c
 typedef struct {
@@ -359,7 +360,7 @@ int lept_parse(lept_value* v, const char* json) {
 
 暂时我们只储存 json 字符串当前位置，之后的单元我们需要加入更多内容。
 
-若 lept_parse() 失败，会把 v 设为 null 类型，所以这里先把它设为 null，让 lept_parse_value() 写入解析出来的根值。
+若 `lept_parse()` 失败，会把 `v` 设为 `null` 类型，所以这里先把它设为 `null`，让 `lept_parse_value()` 写入解析出来的根值。
 
 leptjson 是一个手写的递归下降解析器（recursive descent parser）。由于 JSON 语法特别简单，我们不需要写分词器（tokenizer），只需检测下一个字符，便可以知道它是哪种类型的值，然后调用相关的分析函数。对于完整的 JSON 语法，跳过空白后，只需检测当前字符：
 
@@ -405,17 +406,17 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 }
 ~~~
 
-由于 lept_parse_whitespace() 是不会出现错误的，返回类型为 void。其它的解析函数会返回错误码，传递至顶层。
+由于 `lept_parse_whitespace()` 是不会出现错误的，返回类型为 `void`。其它的解析函数会返回错误码，传递至顶层。
 
 ## 关于断言
 
 断言（assertion）是 C 语言中常用的防御式编程方式，减少编程错误。最常用的是在函数开始的地方，检测所有参数。有时候也可以在调用函数后，检查上下文是否正确。
 
-C 语言的标准库含有 assert() 这个宏（需 #include <assert.h>），提供断言功能。当程序以 release 配置编译时（定义了 NDEBUG 宏），assert() 不会做检测；而当在 debug 配置时（没定义 NDEBUG 宏），则会在运行时检测 assert(cond) 中的条件是否为真（非 0），断言失败会直接令程序崩溃。
+C 语言的标准库含有 `assert()` 这个宏（需 `#include <assert.h>`），提供断言功能。当程序以 release 配置编译时（定义了 `NDEBUG` 宏），`assert()` 不会做检测；而当在 debug 配置时（没定义 `NDEBUG` 宏），则会在运行时检测 `assert(cond)` 中的条件是否为真（非 0），断言失败会直接令程序崩溃。
 
-例如上面的 lept_parse_null() 开始时，当前字符应该是 'n'，所以我们使用一个宏 EXPECT(c, ch) 进行断言，并跳到下一字符。
+例如上面的 `lept_parse_null()` 开始时，当前字符应该是 `'n'`，所以我们使用一个宏 `EXPECT(c, ch)` 进行断言，并跳到下一字符。
 
-初使用断言的同学，可能会错误地把含副作用的代码放在 assert() 中：
+初使用断言的同学，可能会错误地把含副作用的代码放在 `assert()` 中：
 
 ~~~c
 assert(x++ == 0); /* 这是错误的! */
@@ -429,9 +430,9 @@ assert(x++ == 0); /* 这是错误的! */
 
 本文介绍了如何配置一个编程环境，单元测试的重要性，以至于一个 JSON 解析器的子集实现。如果你读到这里，还未动手，建议你快点试一下。以下是本单元的练习，很容易的，但我也会在稍后发出解答篇。
 
-1. 修正关于 LEPT_PARSE_ROOT_NOT_SINGULAR 的单元测试，若 json 在一个值之后，空白之后还有其它字符，则要返回 LEPT_PARSE_ROOT_NOT_SINGULAR。
-2. 参考 test_parse_null()，加入 test_parse_true()、test_parse_false() 单元测试。
-3. 参考 lept_parse_null() 的实现和调用方，解析 true 和 false 值。
+1. 修正关于 `LEPT_PARSE_ROOT_NOT_SINGULAR` 的单元测试，若 json 在一个值之后，空白之后还有其它字符，则要返回 `LEPT_PARSE_ROOT_NOT_SINGULAR`。
+2. 参考 `test_parse_null()`，加入 `test_parse_true()`、`test_parse_false()` 单元测试。
+3. 参考 `lept_parse_null()` 的实现和调用方，解析 true 和 false 值。
 
 ## 常见问答
 
