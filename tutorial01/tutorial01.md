@@ -353,7 +353,7 @@ int lept_parse(lept_value* v, const char* json) {
     assert(v != NULL);
     c.json = json;
     v->type = LEPT_NULL;
-    lept_parse_whitespace(c);
+    lept_parse_whitespace(&c);
     return lept_parse_value(&c, v);
 }
 ~~~
