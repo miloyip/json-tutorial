@@ -368,7 +368,7 @@ leptjson 是一个手写的递归下降解析器（recursive descent parser）�
 * t ➔ true
 * f ➔ false
 * " ➔ string
-* 0-9/-/+ ➔ number
+* 0-9/- ➔ number
 * [ ➔ array
 * { ➔ object
 
