@@ -121,6 +121,7 @@ static void test_parse_root_not_singular() {
 
 static void test_parse_number_too_big() {
     TEST_ERROR(LEPT_PARSE_NUMBER_TOO_BIG, "1e309");
+    TEST_ERROR(LEPT_PARSE_NUMBER_TOO_BIG, "-1e309");
 }
 
 static void test_parse() {
