@@ -3,6 +3,8 @@
 #include <stdlib.h>  /* NULL, strtod() */
 
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
+#define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
+#define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
 
 typedef struct {
     const char* json;
@@ -42,9 +44,50 @@ static int lept_parse_null(lept_context* c, lept_value* v) {
     return LEPT_PARSE_OK;
 }
 
+static int validate_number(const char *number)
+{
+    (void)number;
+    char c;
+    if (*number == '-') {
+        ++number;
+    }
+    if (!ISDIGIT(*number)) {
+        return 0;
+    }
+    if (*number == '0') {
+        c = *++number;
+        if (c == '\0') return 1;
+        if (c != '.' && c != 'e' && c != 'E') return 0;
+
+    } else {
+        for (; (c = *number) != '\0' && c != '.' && c != 'e' && c != 'E'; ++number) {
+            if (!ISDIGIT(c)) return 0;
+        }
+        if (c == '\0') {
+            return 1;
+        }
+    }
+    if (c == '.') { 
+        ++number;
+        for (;(c = *number) != '\0' && c != 'e' && c !='E'; ++number) {
+            if (!ISDIGIT(c)) return 0;
+        }
+        if (c == '\0') return 1;
+    } 
+    c = *++number;
+    if (c == '-' || c == '+') c = *++number;
+    if (!ISDIGIT(c)) return 0;
+    for (; (c = *number) != '\0'; ++number) {
+        if (!ISDIGIT(c)) return 0;
+    }
+    return 1;
+}
+
 static int lept_parse_number(lept_context* c, lept_value* v) {
     char* end;
     /* \TODO validate number */
+    if (!validate_number(c->json)) 
+        return LEPT_PARSE_INVALID_VALUE;
     v->n = strtod(c->json, &end);
     if (c->json == end)
         return LEPT_PARSE_INVALID_VALUE;
