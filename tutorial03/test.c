@@ -109,7 +109,7 @@ static void test_parse_string() {
     TEST_STRING("Hello", "\"Hello\"");
 #if 0
     TEST_STRING("Hello\nWorld", "\"Hello\\nWorld\"");
-    TEST_STRING("\"\\/\b\f\n\r\t", "\"\\\"\\\\/\\b\\f\\n\\r\\t\"");
+    TEST_STRING("\" \\ / \b \f \n \r \t", "\"\\\" \\\\ \\/ \\b \\f \\n \\r \\t\"");
 #endif
 }
 
