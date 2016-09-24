@@ -36,10 +36,11 @@ static void test_parse_true() {
 
 static void test_parse_false() {
 	lept_value v;
-	v.type = LEPT_NULL;
+	v.type = LEPT_TRUE;
 	EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "false"));
-	EXPECT_EQ_INT(LEPT_FALSE, lept_get_value(&v));
+	EXPECT_EQ_INT(LEPT_FALSE, lept_get_type(&v));
 }
+
 ///////////////////////////////////////////////////////////////////////
 //- only contains empty -//
 static void test_parse_expect_value() {
@@ -73,6 +74,8 @@ static void test_parse_root_not_singular() {
 
 static void test_parse() {
     test_parse_null();
+	//test_parse_true();
+	test_parse_false();
     test_parse_expect_value();
     test_parse_invalid_value();
     test_parse_root_not_singular();
