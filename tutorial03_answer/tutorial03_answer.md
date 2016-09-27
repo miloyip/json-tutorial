@@ -1,7 +1,7 @@
 # 从零开始的 JSON 库教程（三）：解析字符串解答篇
 
 * Milo Yip
-* 2016/9/24
+* 2016/9/27
 
 本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第三个单元解答编。解答代码位于 [json-tutorial/tutorial03_answer](https://github.com/miloyip/json-tutorial/blob/master/tutorial03_answer)。
 
