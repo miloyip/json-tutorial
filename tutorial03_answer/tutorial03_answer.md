@@ -58,9 +58,29 @@ void lept_set_number(lept_value* v, double n) {
 
 那问题是，如果我们没有调用 `lept_free()`，怎样能发现这些内存泄漏？
 
-在 Windows 下，Visual C++ 的 C Runtime Library（CRT）可以检测内存泄漏。
+## 1A. Windows 下的内存泄漏检测方法
 
-首先，我们⋯⋯
+在 Windows 下，可使用 Visual C++ 的 [C Runtime Library（CRT） 检测内存泄漏](https://msdn.microsoft.com/zh-cn/library/x98tx3cf.aspx)。
+
+首先，我们在两个 .c 文件首行插入这一段代码：
+
+~~~c
+#ifdef _WINDOWS
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#endif
+~~~
+
+并在 `main()` 开始位置插入：
+
+~~~c
+int main() {
+#ifdef _WINDOWS
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+~~~
+
+在 Debug 配置下按 F5 生成、开始调试程序，没有任何异样。
 
 然后，我们删去 `lept_set_boolean()` 中的 `lept_free(v)`：
 
@@ -71,7 +91,21 @@ void lept_set_boolean(lept_value* v, int b) {
 }
 ~~~
 
-在 Linux、OS X 下，我们可以使用 [valgrind](http://valgrind.org/) 工具（用 `apt-get install valgrind`、 `brew install valgrind`）。我们不用修改代码，只要在命令行执行：
+再次按 F5 生成、开始调试程序，在输出会看到内存泄漏信息：
+
+~~~
+Detected memory leaks!
+Dumping objects ->
+C:\GitHub\json-tutorial\tutorial03_answer\leptjson.c(212) : {79} normal block at 0x013D9868, 2 bytes long.
+ Data: <a > 61 00 
+Object dump complete.
+~~~
+
+这正是我们在单元测试中，先设置字符串，然后设布尔值时设释放字符串所分配的内存。比较麻烦的是，它没有显示调用堆栈。从输出信息中 `... {79} ...` 我们知道是第 79 次分配的内存做成问题，我们可以加上 `_CrtSetBreakAlloc(79);` 来调试，那么它便会在第 79 次时中断于分配调用的位置，那时候就能从调用堆栈去找出来龙去脉。
+
+## 1B. Linux/OSX 下的内存泄漏检测方法
+
+在 Linux、OS X 下，我们可以使用 [valgrind](http://valgrind.org/) 工具（用 `apt-get install valgrind`、 `brew install valgrind`）。我们完全不用修改代码，只要在命令行执行：
 
 ~~~
 $ valgrind --leak-check=full  ./leptjson_test
