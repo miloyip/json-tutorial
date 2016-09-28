@@ -1,0 +1,17 @@
+digraph {
+    rankdir=LR
+    compound=true
+    fontname="Inconsolata, Consolas"
+    fontsize=10
+    margin="0,0"
+    ranksep=0.5
+    nodesep=1
+    penwidth=0.5
+    
+    node [shape=Mrecord, fontname="Inconsolata, Consolas", fontsize=10, penwidth=0.5, style=filled, colorscheme=spectral7]
+    edge [fontname="Inconsolata, Consolas", fontsize=10, penwidth=0.5]
+
+    old [fillcolor=6, label="double n (8 bytes) |const char* s (4 bytes) |size_t len (4 bytes)|int type (4 bytes)"]
+    new [fillcolor=5, label="{double n (8 bytes)|{const char* s (4 bytes)|size_t len (4 bytes)}}|int type (4 bytes)"]
+    old -> new [style=invis]
+}

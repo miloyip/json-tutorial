@@ -1,9 +1,9 @@
-# 从零开始的 JSON 库教程（一）：启程解答编
+# 从零开始的 JSON 库教程（一）：启程解答篇
 
 * Milo Yip
 * 2016/9/17
 
-本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第一个单元。解答代码位于 [json-tutorial/tutorial01_answer](https://github.com/miloyip/json-tutorial/blob/master/tutorial01_answer/)。
+本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第一个单元解答篇。解答代码位于 [json-tutorial/tutorial01_answer](https://github.com/miloyip/json-tutorial/blob/master/tutorial01_answer/)。
 
 ## 1. 修正 LEPT_PARSE_ROOT_NOT_SINGULAR
 
