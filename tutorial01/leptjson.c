@@ -45,25 +45,22 @@ static int lept_parse_true(lept_context* c,lept_value* v){
 	return LEPT_PARSE_OK;
 }
 
-static int lept_parse_literal(lept_context* c, lept_value* v,char s[], lept_type type){
-	char *p=c->json;
-	char *q=s;
-	while(*p == *q){
-		p++;
-		q++;
+
+
+static int lept_parse_literal(lept_context *c, lept_value* v, const char* literal, lept_type type){
+	size_t i;
+	EXPECT(c,literal[0]);
+	for(i=0;literal[i+1];i++){
+		if(c->json[i]!=literal[i+1])
+			return LEPT_PARSE_INVALID_VALUE;
 	}
+	c->json +=i;		
 	v->type=type;
-	if(*p!='\0')
-		return LEPT_PARSE_INVALID_VALUE;
-	if(*c->json =='f')
-		c->json+=5;
-	else
-		c->json+=4;
-	return LEPT_PARSE_OK;
+	return LEPT_PARSE_OK;	
+
 	
+
 }
-
-
 
 
 
