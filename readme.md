@@ -38,8 +38,8 @@
 
 本教程预计分为 9 个单元，第 1-8 个单元附带练习和解答。
 
-1. [启程](tutorial01/tutorial01.md)（2016/9/15 完成）：编译环境、JSON 简介、测试驱动、解析器主要函数及各数据结构。练习 JSON 布尔类型的解析。[启程解答编](tutorial01_answer/tutorial01_answer.md)（2016/9/17 完成）。
-2. [解析数字](tutorial02/tutorial02.md)（2016/9/18 完成）：JSON number 的语法。练习 JSON number 类型的校验。[解析数字解答编](tutorial02_answer/tutorial02_answer.md)（2016/9/20 完成）。
+1. [启程](tutorial01/tutorial01.md)（2016/9/15 完成）：编译环境、JSON 简介、测试驱动、解析器主要函数及各数据结构。练习 JSON 布尔类型的解析。[启程解答篇](tutorial01_answer/tutorial01_answer.md)（2016/9/17 完成）。
+2. [解析数字](tutorial02/tutorial02.md)（2016/9/18 完成）：JSON number 的语法。练习 JSON number 类型的校验。[解析数字解答篇](tutorial02_answer/tutorial02_answer.md)（2016/9/20 完成）。
 3. [解析字符串](tutorial03/tutorial03.md)（2016/9/22 完成）：使用 union 存储 variant、自动扩展的堆栈、JSON string 的语法、valgrind。练习最基本的 JSON string 类型的解析、内存释放。
 4. Unicode：Unicode 和 UTF-8 的基本知识、JSON string 的 unicode 处理。练习完成 JSON string 类型的解析。
 5. 解析数组：JSON array 的语法。练习完成 JSON array 类型的解析、相关内存释放。
