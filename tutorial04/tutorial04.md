@@ -63,7 +63,7 @@ codepoint = 0x10000 + (H − 0xD800) × 0x400 + (L − 0xDC00)
 
 UTF-8 在网页上的使用率势无可挡：
 
-![ ](images/Utf8webgroth.png)
+![ ](images/Utf8webgrowth.png)
 
 （图片来自 [Wikipedia Common](https://commons.wikimedia.org/wiki/File:Utf8webgrowth.svg)，数据来自 Google 对网页字符编码的统计。）
 
