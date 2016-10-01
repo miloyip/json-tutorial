@@ -3,7 +3,7 @@
 * Milo Yip
 * 2016/10/2
 
-本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第四个单元。代码位于 [json-tutorial/tutorial04](https://github.com/miloyip/json-tutorial/blob/master/tutorial04_answer)。
+本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第四个单元。代码位于 [json-tutorial/tutorial04](https://github.com/miloyip/json-tutorial/tree/master/tutorial04)。
 
 本单元内容：
 
