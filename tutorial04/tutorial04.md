@@ -5,6 +5,14 @@
 
 本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第四个单元。代码位于 [json-tutorial/tutorial04](https://github.com/miloyip/json-tutorial/blob/master/tutorial04_answer)。
 
+本单元内容：
+
+1. [Unicode](#1-unicode)
+2. [2.需求](#2-需求)
+3. [3. UTF-8 编码](#3-utf-8-编码)
+4. [4. 实现 `\uXXXX` 解析](#4-实现-uxxxx-解析)
+5. [5. 总结与练习](#5-总结与练习)
+
 ## 1. Unicode
 
 在上一个单元，我们已经能解析「一般」的 JSON 字符串，仅仅没有处理 `\uXXXX` 这种转义序列。为了解析这种序列，我们必须了解有关 Unicode 的基本概念。
@@ -78,7 +86,7 @@ UTF-8 的编码单元是 8 位字节，每个码点编码成 1 至 4 个字节�
 | U+0800 ~ U+FFFF    | 16       | 1110xxxx | 10xxxxxx | 10xxxxxx |
 | U+10000 ~ U+10FFFF | 21       | 11110xxx | 10xxxxxx | 10xxxxxx | 10xxxxxx |
 
-这个编码方法的好处之一是，码点范围 U+0000 ~ U+007F 编码为一字节，与 ASCII 编码兼容。这范围的 Unicode 码点也是和 ASCII 的字符相同。因此，一个 ASCII 文本也是一个 UTF-8 文本。
+这个编码方法的好处之一是，码点范围 U+0000 ~ U+007F 编码为一个字节，与 ASCII 编码兼容。这范围的 Unicode 码点也是和 ASCII 字符相同的。因此，一个 ASCII 文本也是一个 UTF-8 文本。
 
 我们举一个例子解析多字节的情况，欧元符号 `€` → U+20AC：
 
