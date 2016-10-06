@@ -3,7 +3,7 @@
 * Milo Yip
 * 2016/10/2
 
-本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第四个单元。代码位于 [json-tutorial/tutorial04](https://github.com/miloyip/json-tutorial/blob/master/tutorial04_answer)。
+本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第四个单元。代码位于 [json-tutorial/tutorial04](https://github.com/miloyip/json-tutorial/tree/master/tutorial04)。
 
 本单元内容：
 
@@ -101,7 +101,7 @@ UTF-8 的编码单元是 8 位字节，每个码点编码成 1 至 4 个字节�
 
 ~~~c
 if (u >= 0x0800 && u <= 0xFFFF) {
-    OutputByte(0xE0 | ((u >> 12) & 0xFF)); /* 0xE0 = 11000000 */
+    OutputByte(0xE0 | ((u >> 12) & 0xFF)); /* 0xE0 = 11100000 */
     OutputByte(0x80 | ((u >>  6) & 0x3F)); /* 0x80 = 10000000 */
     OutputByte(0x80 | ( u        & 0x3F)); /* 0x3F = 00111111 */
 }
