@@ -192,6 +192,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
         /* bug! */
         lept_value* e = lept_context_push(c, sizeof(lept_value));
         lept_init(e);
+        size++;
         if ((ret = lept_parse_value(c, e)) != LEPT_PARSE_OK)
             return ret;
         /* ... */
