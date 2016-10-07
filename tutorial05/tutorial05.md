@@ -5,6 +5,14 @@
 
 本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第五个单元。代码位于 [json-tutorial/tutorial05](https://github.com/miloyip/json-tutorial/blob/master/tutorial05)。
 
+本单元内容：
+
+1. [JSON 数组](#1-json-数组)
+2. [数据结构](#2-数据结构)
+3. [解析过程](#3-解析过程)
+4. [实现](#4-实现)
+5. [总结与练习](#5-总结与练习)
+
 ## 1. JSON 数组
 
 从零到这第五单元，我们终于要解析一个 JSON 的复合数据类型了。一个 JSON 数组可以包含零至多个元素，而这些元素也可以是数组类型。换句话说，我们可以表示嵌套（nested）的数据结构。先来看看 JSON 数组的语法：
@@ -201,7 +209,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 这种写法为什么会有 bug？这是第 5 条练习题。
 
-## 5. 总结和练习
+## 5. 总结与练习
 
 1. 编写 `test_parse_array()` 单元测试，解析以下 2 个 JSON。由于数组是复合的类型，不能使用一个宏去测试结果，请使用各个 API 检查解析后的内容。
 
