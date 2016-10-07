@@ -202,7 +202,7 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
 unescaped = %x20-21 / %x23-5B / %x5D-10FFFF
 ~~~
 
-当中空缺的 %x22 是双括号，%x5C 是反斜线，都已经处理。所以不合法的字符是 %x00 至 %x1F。我们简单地在 default 里处理：
+当中空缺的 %x22 是双引号，%x5C 是反斜线，都已经处理。所以不合法的字符是 %x00 至 %x1F。我们简单地在 default 里处理：
 
 ~~~c
         /* ... */
