@@ -50,4 +50,4 @@
 
 ## 关于作者
 
-叶劲峰（Milo Yip）现任腾讯 T4 专家、互动娱乐事业群魔方工作室群前台技术总监。他获得香港大学认知科学学士（BCogSc）、香港中文大学系统工程及工程管理哲学硕士（MPhil）。他是《游戏引擎架构》译者、《C++ Primer 中文版（第五版）》审校。他曾参与《天涯明月刀》、《斗战神》、《爱丽丝：疯狂回归》、《美食从天降》、《王子传奇》等游戏项目，以及多个游戏引擎及中间件的研发。他是开源项目 [RapidJSON](https://github.com/miloyip/rapidjson) 的作者，开发 [nativejson-benchmarck](https://github.com/miloyip/nativejson-benchmark) 比较 41 个开源原生 JSON 库的标准符合程度及性能。他在 1990 年学习 C 语言，1995 年开始使用 C++ 于各种项目。
+叶劲峰（Milo Yip）现任腾讯 T4 专家、互动娱乐事业群魔方工作室群前台技术总监。他获得香港大学认知科学学士（BCogSc）、香港中文大学系统工程及工程管理哲学硕士（MPhil）。他是《游戏引擎架构》译者、《C++ Primer 中文版（第五版）》审校。他曾参与《天涯明月刀》、《斗战神》、《爱丽丝：疯狂回归》、《美食从天降》、《王子传奇》等游戏项目，以及多个游戏引擎及中间件的研发。他是开源项目 [RapidJSON](https://github.com/miloyip/rapidjson) 的作者，开发 [nativejson-benchmark](https://github.com/miloyip/nativejson-benchmark) 比较 41 个开源原生 JSON 库的标准符合程度及性能。他在 1990 年学习 C 语言，1995 年开始使用 C++ 于各种项目。
