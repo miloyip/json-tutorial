@@ -42,7 +42,7 @@
 2. [解析数字](tutorial02/tutorial02.md)（2016/9/18 完成）：JSON number 的语法。练习 JSON number 类型的校验。[解析数字解答篇](tutorial02_answer/tutorial02_answer.md)（2016/9/20 完成）。
 3. [解析字符串](tutorial03/tutorial03.md)（2016/9/22 完成）：使用 union 存储 variant、自动扩展的堆栈、JSON string 的语法、valgrind。练习最基本的 JSON string 类型的解析、内存释放。[解析字符串解答篇](tutorial03_answer/tutorial03_answer.md)（2016/9/27 完成）。
 4. [Unicode](tutorial04/tutorial04.md)（2016/10/2 完成）：Unicode 和 UTF-8 的基本知识、JSON string 的 unicode 处理。练习完成 JSON string 类型的解析。[Unicode 解答篇](tutorial04_answer/tutorial04_answer.md)（2016/10/6 完成）。
-5. [解析数组](tutorial05/tutorial05.md)（2016/10/7 完成）：JSON array 的语法。练习完成 JSON array 类型的解析、相关内存释放。
+5. [解析数组](tutorial05/tutorial05.md)（2016/10/7 完成）：JSON array 的语法。练习完成 JSON array 类型的解析、相关内存释放。[解析数组解答篇](tutorial05_answer/tutorial05_answer.md)（2016/10/13 完成）。
 6. 解析对象：JSON object 的语法、重构 string 解析函数。练习完成 JSON object 的解析、相关内存释放。
 7. 生成器：JSON 生成过程、注意事项。练习完成 JSON 生成器。
 8. 访问：JSON array／object 的访问及修改。练习完成相关功能。
