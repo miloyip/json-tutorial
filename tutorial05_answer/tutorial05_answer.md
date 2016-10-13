@@ -155,7 +155,7 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
             break;
         }
     }
-    /* Pop and free values on stack */
+    /* Pop and free values on the stack */
     for (i = 0; i < size; i++)
         lept_free((lept_value*)lept_context_pop(c, sizeof(lept_value)));
     return ret;
