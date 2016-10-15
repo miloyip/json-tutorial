@@ -1,0 +1,32 @@
+digraph {
+    rankdir=TB
+    compound=true
+    fontname="Inconsolata, Consolas"
+    fontsize=10
+    margin="0,0"
+    ranksep=0.3
+    nodesep=1
+    penwidth=0.5
+    
+    node [fontname="Inconsolata, Consolas", fontsize=10, penwidth=0.5, colorscheme=spectral7]
+    edge [fontname="Inconsolata, Consolas", fontsize=10, penwidth=0.5]
+
+    {
+        node [shape=record, style=filled, margin=0.1, height=0.3]
+        json [fillcolor=3, label="[|\"|a|b|c|\"|<j>,|[|1|,|2|]|,|3|]|\\0"]
+        stack [fillcolor=4, label="{string|<s>s|len=3}|<t> | | | | |"]
+        abc [fillcolor=3, label="<h>a|b|c|\\0"]
+    }
+    {
+        node [shape=plaintext, margin=0]
+
+        cjson [label="c->json"]
+        ctop [label="c->top"]
+        desc [style=solid,label="\l1. lept_parse()\l  2. lept_parse_value()\l    3. lept_parse_array()"]
+    }
+
+    cjson -> json:j
+    ctop -> stack:t
+    json -> desc [style=invis]
+    stack:s -> abc:h
+ }
