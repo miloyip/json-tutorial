@@ -86,23 +86,45 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
     return LEPT_PARSE_OK;
 }
 
+static int valid_char(const char *p){
+     if(*p < 0x20)
+	return 0;
+     return 1;
+}
 static int lept_parse_string(lept_context* c, lept_value* v) {
     size_t head = c->top, len;
     const char* p;
     EXPECT(c, '\"');
     p = c->json;
-    for (;;) {
-        char ch = *p++;
+    for (;;p++) {
+        char ch = *p;
         switch (ch) {
             case '\"':
                 len = c->top - head;
                 lept_set_string(v, (const char*)lept_context_pop(c, len), len);
-                c->json = p;
+                c->json = ++p;
                 return LEPT_PARSE_OK;
             case '\0':
                 c->top = head;
                 return LEPT_PARSE_MISS_QUOTATION_MARK;
+	    case '\\':
+		ch = *(p+1);
+		p++;
+		switch(ch){
+			case 'b':PUTC(c, '\b');break;
+			
+			case 'f':PUTC(c, '\f');break;
+			case 'n':PUTC(c, '\n');break;
+			case 'r':PUTC(c, '\r');break;
+			case 't':PUTC(c, '\t');break;
+			case '\\':PUTC(c, '\\');break;
+			case '\"':PUTC(c, '\"');break;
+			case '/':PUTC(c, '/');break;
+			default:
+				return LEPT_PARSE_INVALID_STRING_ESCAPE;
+		}break;
             default:
+		if(!valid_char(p))return LEPT_PARSE_INVALID_STRING_CHAR;
                 PUTC(c, ch);
         }
     }
@@ -154,11 +176,18 @@ lept_type lept_get_type(const lept_value* v) {
 
 int lept_get_boolean(const lept_value* v) {
     /* \TODO */
+    assert(v != NULL);
+    if(v->type == LEPT_TRUE)
+	return 1;
     return 0;
 }
 
 void lept_set_boolean(lept_value* v, int b) {
     /* \TODO */
+    assert((v!=NULL));
+   v->type = LEPT_FALSE;
+   if(b)
+	v->type = LEPT_TRUE;
 }
 
 double lept_get_number(const lept_value* v) {
@@ -168,6 +197,9 @@ double lept_get_number(const lept_value* v) {
 
 void lept_set_number(lept_value* v, double n) {
     /* \TODO */
+    assert(v != NULL);
+    v->type = LEPT_NUMBER;
+    v->u.n = n;
 }
 
 const char* lept_get_string(const lept_value* v) {
