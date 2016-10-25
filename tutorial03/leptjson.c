@@ -9,6 +9,10 @@
 #define LEPT_PARSE_STACK_INIT_SIZE 256
 #endif
 
+#ifndef LEPT_PARSE_STRING_INIT_SIZE
+#define LEPT_PARSE_STRING_INIT_SIZE 256
+#endif
+
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
 #define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
 #define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
@@ -91,6 +95,27 @@ static int valid_char(const char *p){
 	return 0;
      return 1;
 }
+static int lept_append_string(lept_value* v, const char ch){
+	assert(v != NULL && (v->type == LEPT_NULL || v->type == LEPT_STRING));
+	static string_heap_size = 0;
+	if(v->type == LEPT_NULL){
+		string_heap_size = LEPT_PARSE_STRING_INIT_SIZE; 
+		v->u.s.s = (char*)malloc(string_heap_size);
+		v->u.s.len = 0;
+		v->type = LEPT_STRING; 
+	}
+	if(v->u.s.len + 1 > string_heap_size){
+		string_heap_size += string_heap_size>>1;
+		v->u.s.s = (char*)realloc(v->u.s.s, string_heap_size);
+	}
+	if(v->type == LEPT_STRING && v->u.s.s != NULL){
+		v->u.s.s[v->u.s.len] = ch;
+		if(ch != '\0')v->u.s.len++; 
+		return 0;
+	}
+	else
+		return -1;
+}
 static int lept_parse_string(lept_context* c, lept_value* v) {
     size_t head = c->top, len;
     const char* p;
@@ -100,32 +125,33 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
         char ch = *p;
         switch (ch) {
             case '\"':
-                len = c->top - head;
-                lept_set_string(v, (const char*)lept_context_pop(c, len), len);
+		lept_append_string(v, '\0');
                 c->json = ++p;
                 return LEPT_PARSE_OK;
             case '\0':
+		free(v->u.s.s);	
+		v->type = LEPT_NULL;
                 c->top = head;
                 return LEPT_PARSE_MISS_QUOTATION_MARK;
 	    case '\\':
 		ch = *(p+1);
 		p++;
 		switch(ch){
-			case 'b':PUTC(c, '\b');break;
+			case 'b':lept_append_string(v, '\b');break;
 			
-			case 'f':PUTC(c, '\f');break;
-			case 'n':PUTC(c, '\n');break;
-			case 'r':PUTC(c, '\r');break;
-			case 't':PUTC(c, '\t');break;
-			case '\\':PUTC(c, '\\');break;
-			case '\"':PUTC(c, '\"');break;
-			case '/':PUTC(c, '/');break;
+			case 'f':lept_append_string(v, '\f');break;
+			case 'n':lept_append_string(v, '\n');break;
+			case 'r':lept_append_string(v, '\r');break;
+			case 't':lept_append_string(v, '\t');break;
+			case '\\':lept_append_string(v, '\\');break;
+			case '\"':lept_append_string(v, '\"');break;
+			case '/':lept_append_string(v, '/');break;
 			default:
 				return LEPT_PARSE_INVALID_STRING_ESCAPE;
 		}break;
             default:
 		if(!valid_char(p))return LEPT_PARSE_INVALID_STRING_CHAR;
-                PUTC(c, ch);
+                lept_append_string(v, ch);
         }
     }
 }
@@ -175,7 +201,6 @@ lept_type lept_get_type(const lept_value* v) {
 }
 
 int lept_get_boolean(const lept_value* v) {
-    /* \TODO */
     assert(v != NULL);
     if(v->type == LEPT_TRUE)
 	return 1;
@@ -183,7 +208,6 @@ int lept_get_boolean(const lept_value* v) {
 }
 
 void lept_set_boolean(lept_value* v, int b) {
-    /* \TODO */
     assert((v!=NULL));
    v->type = LEPT_FALSE;
    if(b)
@@ -196,7 +220,6 @@ double lept_get_number(const lept_value* v) {
 }
 
 void lept_set_number(lept_value* v, double n) {
-    /* \TODO */
     assert(v != NULL);
     v->type = LEPT_NUMBER;
     v->u.n = n;
