@@ -199,7 +199,7 @@ static void test_parse_miss_comma_or_curly_bracket() {
 由于对象和数组的相似性，此单元留空了较多实现部分作为练习：
 
 1. 依第 3 节所述，重构 `lept_parse_string()`。重构前运行单元测试，重构后确保单元测试仍保持通过。
-2. 打开 `test.c` 中两个 `#if 0`，运成单元测试，证实单元测试不通过。然后实现 `lept_parse_object()` 中的 `\todo` 部分。验证实现能通过单元测试。
+2. 打开 `test.c` 中两个 `#if 0`，运行单元测试，证实单元测试不通过。然后实现 `lept_parse_object()` 中的 `\todo` 部分。验证实现能通过单元测试。
 3. 使用工具检测内存泄漏，解决它们。
 
 如果你遇到问题，有不理解的地方，或是有建议，都欢迎在评论或 [issue](https://github.com/miloyip/json-tutorial/issues) 中提出，让所有人一起讨论。
