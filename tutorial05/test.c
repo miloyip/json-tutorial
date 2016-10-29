@@ -127,14 +127,41 @@ static void test_parse_string() {
     TEST_STRING("\xF0\x9D\x84\x9E", "\"\\ud834\\udd1e\"");  /* G clef sign U+1D11E */
 }
 
-static void test_parse_array() {
-    lept_value v;
+#define ISWHITESPACE(ch) ((ch) == ' ' || (ch) == '\t' || (ch) == '\n' || (ch) == '\r')
 
-    lept_init(&v);
-    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "[ ]"));
-    EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(&v));
-    EXPECT_EQ_SIZE_T(0, lept_get_array_size(&v));
-    lept_free(&v);
+#define test_parse_whitespace(p) do{\
+	while(ISWHITESPACE(*(p)))(p)++;\
+	}while(0)
+
+static int test_array_result(const char* array_res, const char* json){
+	while(*array_res != '\0' && *json != '\0'){
+		test_parse_whitespace(json);
+		if(*array_res == *json)json++, array_res++;
+		else if(!ISWHITESPACE(*json))
+			return 0;	
+	}    
+	if(*array_res == '\0' && *json == '\0')
+		return 1;
+	return 0;
+}
+
+#define TEST_ARRAY(json, size) do{\
+	lept_value v;\
+	char* s;\
+	lept_init(&v);\
+	EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, (json)));\
+	EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(&v));\
+	EXPECT_EQ_SIZE_T((size), lept_get_array_size(&v));\
+	s = (char*)lept_get_array_to_string(&v);\
+	EXPECT_EQ_BASE(test_array_result(s, (json)) == 1, (json), s, "%s");\
+	free(s);\
+	lept_free(&v);\
+	}while(0)
+
+static void test_parse_array() {
+    TEST_ARRAY("[null, true, false, \"ab\", 123]", 5);
+    TEST_ARRAY("[null, true, false, [],[123,null]]", 5);
+
 }
 
 #define TEST_ERROR(error, json)\
@@ -167,10 +194,8 @@ static void test_parse_invalid_value() {
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "nan");
 
     /* invalid value in array */
-#if 0
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "[1,]");
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "[\"a\", nul]");
-#endif
 }
 
 static void test_parse_root_not_singular() {
