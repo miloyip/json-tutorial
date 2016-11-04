@@ -159,7 +159,7 @@ static int test_array_result(const char* array_res, const char* json){
 	}while(0)
 
 static void test_parse_array() {
-    TEST_ARRAY("[null, true, false, \"ab\", 123]", 5);
+    TEST_ARRAY("[null, true, false, \"abcdefgfeqfqgrwqwerqwprjwqeirhqweriwqtrhpeqwtqwnerpqwngqgiernqpweruqwnerqiwerhqweiruqiwreqeqrwqepriwqetwitewiquriihvriqyieirnqienroouvqrnwqoehrnqqreqdusejsncjajsjejsnajriejiaoperiqwueiransdniegqnadsjnpajsifjqweirjqieprqwierpqipe\", 123]", 5);
     TEST_ARRAY("[null, true, false, [],[123,null]]", 5);
 
 }
@@ -254,12 +254,10 @@ static void test_parse_invalid_unicode_surrogate() {
 }
 
 static void test_parse_miss_comma_or_square_bracket() {
-#if 0
     TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1");
     TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1}");
     TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1 2");
     TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[[]");
-#endif
 }
 
 static void test_parse() {
