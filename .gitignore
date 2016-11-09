@@ -1,1 +1,4 @@
 */build/
+.gitignore
+*.o
+.DS_Store
