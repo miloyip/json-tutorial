@@ -423,7 +423,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 断言（assertion）是 C 语言中常用的防御式编程方式，减少编程错误。最常用的是在函数开始的地方，检测所有参数。有时候也可以在调用函数后，检查上下文是否正确。
 
-C 语言的标准库含有 `assert()` 这个宏（需 `#include <assert.h>`），提供断言功能。当程序以 release 配置编译时（定义了 `NDEBUG` 宏），`assert()` 不会做检测；而当在 debug 配置时（没定义 `NDEBUG` 宏），则会在运行时检测 `assert(cond)` 中的条件是否为真（非 0），断言失败会直接令程序崩溃。
+C 语言的标准库含有 [`assert()`](http://en.cppreference.com/w/c/error/assert) 这个宏（需 `#include <assert.h>`），提供断言功能。当程序以 release 配置编译时（定义了 `NDEBUG` 宏），`assert()` 不会做检测；而当在 debug 配置时（没定义 `NDEBUG` 宏），则会在运行时检测 `assert(cond)` 中的条件是否为真（非 0），断言失败会直接令程序崩溃。
 
 例如上面的 `lept_parse_null()` 开始时，当前字符应该是 `'n'`，所以我们使用一个宏 `EXPECT(c, ch)` 进行断言，并跳到下一字符。
 
@@ -450,5 +450,9 @@ assert(x++ == 0); /* 这是错误的! */
 1. 为什么把例子命名为 leptjson？
 
    来自于标准模型中的轻子（lepton），意为很轻量的 JSON 库。另外，建议大家为项目命名时，先 google 一下是否够独特，有很多同名的话搜寻时难以命中。
+
+2. 为什么使用宏而不用函数或内联函数？
+
+   因为这个测试框架使用了 `__LINE__` 这个编译器提供的宏，代表编译时该行的行号。如果用函数或内联函数，每次的行号便都会相同。另外，内联函数是 C99 的新增功能，本教程使用 C89。
 
 其他常见问答将会从评论中整理。

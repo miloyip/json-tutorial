@@ -52,7 +52,7 @@ static void test_parse_expect_value() {
 ~~~
 number = [ "-" ] int [ frac ] [ exp ]
 int = "0" / digit1-9 *digit
-frac = "." *digit
+frac = "." 1*digit
 exp = ("e" / "E") ["-" / "+"] 1*digit
 ~~~
 
@@ -60,7 +60,7 @@ number 是以十进制表示，它主要由 4 部分顺序组成：负号、整�
 
 整数部分如果是 0 开始，只能是单个 0；而由 1-9 开始的话，可以加任意数量的数字（0-9）。也就是说，`0123` 不是一个合法的 JSON 数字。
 
-小数部分比较直观，就是小数点后可有任意数量的数字（0-9）。
+小数部分比较直观，就是小数点后是一或多个数字（0-9）。
 
 JSON 可使用科学记数法，指数部分由大写 E 或小写 e 开始，然后可有正负号，之后是一或多个数字（0-9）。
 
@@ -224,5 +224,9 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 1. 为什么要把一些测试代码以 `#if 0 ... #endif` 禁用？
 
    因为在做第 1 个练习题时，我希望能 100% 通过测试，方便做重构。另外，使用 `#if 0 ... #endif` 而不使用 `/* ... */`，是因为 C 的注释不支持嵌套（nested），而 `#if ... #endif` 是支持嵌套的。代码中已有注释时，用 `#if 0 ... #endif` 去禁用代码是一个常用技巧，而且可以把 `0` 改为 `1` 去恢复。
+
+2. 科学计数法的指数部分没有对前导零作限制吗？`1E012` 也是合法的吗？
+
+   是的，这是合法的。JSON 源自于 JavaScript（[ECMA-262, 3rd edition](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)），数字语法取自 JavaScript 的十进位数字的语法（§7.8.3 Numeric Literals）。整数不容许前导零（leading zero），是因为更久的 JavaScript 版本容许以前导零来表示八进位数字，如 `052 == 42`，这种八进位常数表示方式来自于 [C 语言](http://en.cppreference.com/w/c/language/integer_constant)。禁止前导零避免了可能出现的歧义。但是在指数里就不会出现这个问题。多谢 @Smallay 提出及协助解答这个问题。
 
 其他常见问答将会从评论中整理。
