@@ -50,7 +50,8 @@ static int lept_parse_object(lept_context* c, lept_value* v) {
         }
         if ((ret = lept_parse_string_raw(c, &str, &m.klen)) != LEPT_PARSE_OK)
             break;
-        memcpy(m.k = (char*)malloc(m.klen + 1), str, m.klen + 1);
+        memcpy(m.k = (char*)malloc(m.klen + 1), str, m.klen);
+        m.k[m.klen] = '\0';
         /* 2. parse ws colon ws */
         /* ... */
     }
