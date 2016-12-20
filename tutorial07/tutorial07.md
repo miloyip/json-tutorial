@@ -134,7 +134,8 @@ static int lept_stringify_value(lept_context* c, const lept_value* v) {
 
 ~~~c
         case LEPT_NUMBER:
-            c->top -= 32 - sprintf(lept_context_push(c, 32), "%.17g", v->u.n); break;
+            c->top -= 32 - sprintf(lept_context_push(c, 32), "%.17g", v->u.n);
+            break;
 ~~~
 
 ## 5. 总结与练习
