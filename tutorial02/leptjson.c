@@ -1,7 +1,6 @@
 #include "leptjson.h"
 #include <assert.h>  /* assert() */
 #include <stdlib.h>  /* NULL, strtod() */
-#include <string.h>
 #include <math.h>
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
 #define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
@@ -20,12 +19,17 @@ static void lept_parse_whitespace(lept_context* c) {
 
 static int lept_parse_literal(lept_context* c, lept_value* v, 
                               const char* json, int type) {
-    int i, len = strlen(json);
+    size_t i = 0;
+    while(json[i]) {
+        if(c->json[i] != json[i]) return LEPT_PARSE_INVALID_VALUE;
+        ++i;
+    }
+                                  /*
     for(i = 0; i < len; ++i) {
         if(c->json[i] != json[i]) return LEPT_PARSE_INVALID_VALUE;
-    }
+    }*/
     v->type = type;
-    c->json += len;
+    c->json += i;
     return LEPT_PARSE_OK;
 }
 
