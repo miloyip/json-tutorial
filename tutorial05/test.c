@@ -129,11 +129,40 @@ static void test_parse_string() {
 
 static void test_parse_array() {
     lept_value v;
-
+    lept_value* ptr = NULL;
+    size_t i;
     lept_init(&v);
     EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "[ ]"));
     EXPECT_EQ_INT(LEPT_ARRAY, lept_get_type(&v));
     EXPECT_EQ_SIZE_T(0, lept_get_array_size(&v));
+    lept_free(&v);
+
+    lept_init(&v);
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "[ null , false , true , 123 , \"abc\" ]"));
+    EXPECT_EQ_SIZE_T(5, lept_get_array_size(&v));
+    EXPECT_EQ_INT(LEPT_NULL, lept_get_type(lept_get_array_element(&v, 0)));
+    EXPECT_FALSE(lept_get_boolean(lept_get_array_element(&v, 1)));
+    EXPECT_TRUE(lept_get_boolean(lept_get_array_element(&v, 2)));
+    EXPECT_EQ_DOUBLE(123.0, lept_get_number(lept_get_array_element(&v, 3)));
+    EXPECT_EQ_STRING("abc", lept_get_string(lept_get_array_element(&v, 4)), 3);
+    lept_free(&v);
+                  
+    lept_init(&v);
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "[ [ ] , [ 0 ] , [ 0 , 1 ] , [ 0 , 1 , 2 ] ]"));
+    EXPECT_EQ_SIZE_T(4, lept_get_array_size(&v));
+    EXPECT_EQ_SIZE_T(0, lept_get_array_size(lept_get_array_element(&v, 0)));
+    ptr = lept_get_array_element(&v, 1);
+    EXPECT_EQ_SIZE_T(1, lept_get_array_size(ptr));
+    EXPECT_EQ_DOUBLE(0.0, lept_get_number(lept_get_array_element(ptr, 0)));
+    ptr = lept_get_array_element(&v, 2);
+    EXPECT_EQ_SIZE_T(2, lept_get_array_size(ptr));
+    for(i = 0; i <= 1; ++i) {
+        EXPECT_EQ_DOUBLE((double)i, lept_get_number(lept_get_array_element(ptr, i)));
+    }
+    ptr = lept_get_array_element(&v, 3);
+    for(i = 0; i <= 2; ++i) {
+        EXPECT_EQ_DOUBLE((double)i, lept_get_number(lept_get_array_element(ptr, i)));
+    }
     lept_free(&v);
 }
 
@@ -167,10 +196,9 @@ static void test_parse_invalid_value() {
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "nan");
 
     /* invalid value in array */
-#if 0
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "[1,]");
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "[\"a\", nul]");
-#endif
+    TEST_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[\"ab\"");
 }
 
 static void test_parse_root_not_singular() {
