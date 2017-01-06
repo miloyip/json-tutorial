@@ -364,9 +364,9 @@ static void test_parse() {
     test_parse_invalid_unicode_hex();
     test_parse_invalid_unicode_surrogate();
     test_parse_miss_comma_or_square_bracket();
-    /*test_parse_miss_key();
+    test_parse_miss_key();
     test_parse_miss_colon();
-    test_parse_miss_comma_or_curly_bracket();*/
+    test_parse_miss_comma_or_curly_bracket();
 }
 
 static void test_access_null() {
