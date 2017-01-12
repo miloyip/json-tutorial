@@ -1,18 +1,15 @@
 #include "leptjson.h"
-#include <assert.h>
-#include <stdlib.h>
+#include <assert.h> /* assert() */
+#include <stdlib.h> /* NULL */
 
-/*操作会移动指针*/
 #define EXPECT(c, ch)                                                          \
   do {                                                                         \
     assert(*c->json == (ch));                                                  \
     c->json++;                                                                 \
   } while (0)
 
-/*json字符串上下文*/
 typedef struct { const char *json; } lept_context;
 
-/*分割值的操作会移动指针*/
 static void lept_parse_whitespace(lept_context *c) {
   const char *p = c->json;
   while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r')
@@ -38,4 +35,18 @@ static int lept_parse_value(lept_context *c, lept_value *v) {
   default:
     return LEPT_PARSE_INVALID_VALUE;
   }
+}
+
+int lept_parse(lept_value *v, const char *json) {
+  lept_context c;
+  assert(v != NULL);
+  c.json = json;
+  v->type = LEPT_NULL;
+  lept_parse_whitespace(&c);
+  return lept_parse_value(&c, v);
+}
+
+lept_type lept_get_type(const lept_value *v) {
+  assert(v != NULL);
+  return v->type;
 }
