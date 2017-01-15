@@ -18,6 +18,7 @@
 #define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
 #define PUTC(c, ch)         do { *(char*)lept_context_push(c, sizeof(char)) = (ch); } while(0)
 
+
 typedef struct {
     const char* json;
     char* stack;
@@ -91,12 +92,46 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
 }
 
 static const char* lept_parse_hex4(const char* p, unsigned* u) {
-    /* \TODO */
+    char ch ;
+    char i = 0, value;
+    unsigned tu = 0;
+    for(i = 0; i < 4; i++){
+	ch = *p++;
+	if(ch <= '9' && ch >= '0' ){
+		value = ch - '0';	
+	}else if(ch <='f' && ch >= 'a'){
+		value = ch - 'a' + 10;
+	}else if(ch <='F' && ch >= 'A'){
+		value = ch - 'A' + 10;
+	}else return NULL;
+	tu |= value<<((4 - i - 1)*4);
+    }
+    *u = tu;
     return p;
 }
 
 static void lept_encode_utf8(lept_context* c, unsigned u) {
     /* \TODO */
+    if( u <= 0x7f)
+	PUTC(c, u);
+    else
+    if(u >= 0x80 && u <= 0x7ff){
+	PUTC(c, (0xc0 | ((u >> 6)&0x3f))); /* 0xc0 = 11000000 */
+	PUTC(c, (0x80 | (u	& 0x3f))); /* 0x80 = 10000000	 */
+    }    
+    else if(u >= 0x800 && u <= 0x7fff){
+	    PUTC(c, (0xe0 | ((u >> 12)&0x0f)));
+	    PUTC(c, (0x80 | ((u >> 6 )&0x3f)));
+	    PUTC(c, (0x80 | (u &0x3f)));
+    }
+    else {
+	    PUTC(c, (0xf0 | ((u >> 18)&0x07)));
+	    PUTC(c, (0x80 | ((u >> 12)&0x3f)));
+
+	    PUTC(c, (0x80 | ((u >> 6 )&0x3f)));
+	    PUTC(c, (0x80 | (u &0x3f)));
+
+    }
 }
 
 #define STRING_ERROR(ret) do { c->top = head; return ret; } while(0)
@@ -129,6 +164,17 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
                         if (!(p = lept_parse_hex4(p, &u)))
                             STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);
                         /* \TODO surrogate handling */
+			if(u >= 0xd800 && u <= 0xdbff){
+				if(p[0] == '\\' && p[1] == 'u'){
+					unsigned l;
+					p += 2;
+					if (!(p = lept_parse_hex4(p, &l)))
+						STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX);	
+					if( l >= 0xdc00 && l <= 0xdfff){
+						u = 0x10000 + (u - 0xd800)*0x400 + (l - 0xdc00);	
+					}else STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE);
+				}else STRING_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE);
+			}
                         lept_encode_utf8(c, u);
                         break;
                     default:
