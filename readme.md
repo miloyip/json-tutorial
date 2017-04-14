@@ -41,13 +41,13 @@
 1. [启程](tutorial01/tutorial01.md)（2016/9/15 完成）：编译环境、JSON 简介、测试驱动、解析器主要函数及各数据结构。练习 JSON 布尔类型的解析。[启程解答篇](tutorial01_answer/tutorial01_answer.md)（2016/9/17 完成）。
 2. [解析数字](tutorial02/tutorial02.md)（2016/9/18 完成）：JSON number 的语法。练习 JSON number 类型的校验。[解析数字解答篇](tutorial02_answer/tutorial02_answer.md)（2016/9/20 完成）。
 3. [解析字符串](tutorial03/tutorial03.md)（2016/9/22 完成）：使用 union 存储 variant、自动扩展的堆栈、JSON string 的语法、valgrind。练习最基本的 JSON string 类型的解析、内存释放。[解析字符串解答篇](tutorial03_answer/tutorial03_answer.md)（2016/9/27 完成）。
-4. [Unicode](tutorial04/tutorial04.md)（2016/10/2 完成）：Unicode 和 UTF-8 的基本知识、JSON string 的 unicode 处理。练习完成 JSON string 类型的解析。
-5. 解析数组：JSON array 的语法。练习完成 JSON array 类型的解析、相关内存释放。
-6. 解析对象：JSON object 的语法、重构 string 解析函数。练习完成 JSON object 的解析、相关内存释放。
-7. 生成器：JSON 生成过程、注意事项。练习完成 JSON 生成器。
+4. [Unicode](tutorial04/tutorial04.md)（2016/10/2 完成）：Unicode 和 UTF-8 的基本知识、JSON string 的 unicode 处理。练习完成 JSON string 类型的解析。[Unicode 解答篇](tutorial04_answer/tutorial04_answer.md)（2016/10/6 完成）。
+5. [解析数组](tutorial05/tutorial05.md)（2016/10/7 完成）：JSON array 的语法。练习完成 JSON array 类型的解析、相关内存释放。[解析数组解答篇](tutorial05_answer/tutorial05_answer.md)（2016/10/13 完成）。
+6. [解析对象](tutorial06/tutorial06.md)（2016/10/29 完成）：JSON object 的语法、重构 string 解析函数。练习完成 JSON object 的解析、相关内存释放。[解析对象解答篇](tutorial06_answer/tutorial06_answer.md)（2016/11/15 完成）。
+7. [生成器](tutorial07/tutorial07.md)（2016/12/20 完成）：JSON 生成过程、注意事项。练习完成 JSON 生成器。[生成器解答篇](tutorial07_answer/tutorial07_answer.md)（2017/1/5 完成）
 8. 访问：JSON array／object 的访问及修改。练习完成相关功能。
 9. 终点及新开始：加入 nativejson-benchmark 测试，与 RapidJSON 对比及展望。
 
 ## 关于作者
 
-叶劲峰（Milo Yip）现任腾讯 T4 专家、互动娱乐事业群魔方工作室群前台技术总监。他获得香港大学认知科学学士（BCogSc）、香港中文大学系统工程及工程管理哲学硕士（MPhil）。他是《游戏引擎架构》译者、《C++ Primer 中文版（第五版）》审校。他曾参与《天涯明月刀》、《斗战神》、《爱丽丝：疯狂回归》、《美食从天降》、《王子传奇》等游戏项目，以及多个游戏引擎及中间件的研发。他是开源项目 [RapidJSON](https://github.com/miloyip/rapidjson) 的作者，开发 [nativejson-benchmarck](https://github.com/miloyip/nativejson-benchmark) 比较 41 个开源原生 JSON 库的标准符合程度及性能。他在 1990 年学习 C 语言，1995 年开始使用 C++ 于各种项目。
+叶劲峰（Milo Yip）现任腾讯 T4 专家、互动娱乐事业群魔方工作室群前台技术总监。他获得香港大学认知科学学士（BCogSc）、香港中文大学系统工程及工程管理哲学硕士（MPhil）。他是《游戏引擎架构》译者、《C++ Primer 中文版（第五版）》审校。他曾参与《天涯明月刀》、《斗战神》、《爱丽丝：疯狂回归》、《美食从天降》、《王子传奇》等游戏项目，以及多个游戏引擎及中间件的研发。他是开源项目 [RapidJSON](https://github.com/miloyip/rapidjson) 的作者，开发 [nativejson-benchmark](https://github.com/miloyip/nativejson-benchmark) 比较 41 个开源原生 JSON 库的标准符合程度及性能。他在 1990 年学习 C 语言，1995 年开始使用 C++ 于各种项目。
