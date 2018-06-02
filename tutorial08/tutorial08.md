@@ -276,7 +276,6 @@ struct lept_value {
         /* ... */
         struct { lept_value* e; size_t size, capacity; }a; /* array:  elements, element count, capacity */
         /* ... */
-};
 ~~~
 
 我们终于提供设置数组的函数，而且它可提供初始的容量：
@@ -357,6 +356,7 @@ void lept_popback_array_element(lept_value* v) {
 ~~~c
 lept_value* lept_insert_array_element(lept_value* v, size_t index);
 void lept_erase_array_element(lept_value* v, size_t index, size_t count);
+void lept_clear_array(lept_value* v);
 ~~~
 
 ## 5. 动态对象
