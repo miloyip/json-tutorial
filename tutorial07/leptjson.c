@@ -6,6 +6,7 @@
 #include <assert.h>  /* assert() */
 #include <errno.h>   /* errno, ERANGE */
 #include <math.h>    /* HUGE_VAL */
+#include <stdio.h>   /* sprintf() */
 #include <stdlib.h>  /* NULL, malloc(), realloc(), free(), strtod() */
 #include <string.h>  /* memcpy() */
 
@@ -13,10 +14,15 @@
 #define LEPT_PARSE_STACK_INIT_SIZE 256
 #endif
 
+#ifndef LEPT_PARSE_STRINGIFY_INIT_SIZE
+#define LEPT_PARSE_STRINGIFY_INIT_SIZE 256
+#endif
+
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
 #define ISDIGIT(ch)         ((ch) >= '0' && (ch) <= '9')
 #define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
 #define PUTC(c, ch)         do { *(char*)lept_context_push(c, sizeof(char)) = (ch); } while(0)
+#define PUTS(c, s, len)     memcpy(lept_context_push(c, len), s, len)
 
 typedef struct {
     const char* json;
@@ -338,6 +344,39 @@ int lept_parse(lept_value* v, const char* json) {
     assert(c.top == 0);
     free(c.stack);
     return ret;
+}
+
+static void lept_stringify_string(lept_context* c, const char* s, size_t len) {
+    /* ... */
+}
+
+static void lept_stringify_value(lept_context* c, const lept_value* v) {
+    switch (v->type) {
+        case LEPT_NULL:   PUTS(c, "null",  4); break;
+        case LEPT_FALSE:  PUTS(c, "false", 5); break;
+        case LEPT_TRUE:   PUTS(c, "true",  4); break;
+        case LEPT_NUMBER: c->top -= 32 - sprintf(lept_context_push(c, 32), "%.17g", v->u.n); break;
+        case LEPT_STRING: lept_stringify_string(c, v->u.s.s, v->u.s.len); break;
+        case LEPT_ARRAY:
+            /* ... */
+            break;
+        case LEPT_OBJECT:
+            /* ... */
+            break;
+        default: assert(0 && "invalid type");
+    }
+}
+
+char* lept_stringify(const lept_value* v, size_t* length) {
+    lept_context c;
+    assert(v != NULL);
+    c.stack = (char*)malloc(c.size = LEPT_PARSE_STRINGIFY_INIT_SIZE);
+    c.top = 0;
+    lept_stringify_value(&c, v);
+    if (length)
+        *length = c.top;
+    PUTC(&c, '\0');
+    return c.stack;
 }
 
 void lept_free(lept_value* v) {
