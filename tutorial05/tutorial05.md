@@ -222,7 +222,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 3. 使用[第三单元解答篇](../tutorial03_answer/tutorial03_answer.md)介绍的检测内存泄漏工具，会发现测试中有内存泄漏。很明显在 `lept_parse_array()` 中使用到 `malloc()` 分配内存，但却没有对应的 `free()`。应该在哪里释放内存？修改代码，使工具不再检测到相关的内存泄漏。
 
-4. 开启 test.c 中两处被 `#if 0 ... #endif` 关闭的测试，本来 `test_parse_array()` 已经能处理这些测试。然而，运行时会发现 `Assertion failed: (c.top == 0)` 断言失败。这是由于，当错误发生时，仍然有一些临时值在堆栈里，既没有放进数组，也没有被释放。修改 `test_parse_array()`，当遇到错误时，从堆栈中弹出并释放那些临时值，然后才返回错误码。
+4. 开启 test.c 中两处被 `#if 0 ... #endif` 关闭的测试，本来 `lept_parse_array()` 已经能处理这些测试。然而，运行时会发现 `Assertion failed: (c.top == 0)` 断言失败。这是由于，当错误发生时，仍然有一些临时值在堆栈里，既没有放进数组，也没有被释放。修改 `lept_parse_array()`，当遇到错误时，从堆栈中弹出并释放那些临时值，然后才返回错误码。
 
 5. 第 4 节那段代码为什么会有 bug？
 

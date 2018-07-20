@@ -118,7 +118,7 @@ static int lept_stringify_value(lept_context* c, const lept_value* v) {
             break;
 ~~~
 
-但这样需要在 `PUTS()` 中做一次 `memcpy()`，实际上我们可以避免这次复制，只需要生成的时候直接写进 `c` 里的推栈，然后再按实际长度调查 `c->top`：
+但这样需要在 `PUTS()` 中做一次 `memcpy()`，实际上我们可以避免这次复制，只需要生成的时候直接写进 `c` 里的堆栈，然后再按实际长度调查 `c->top`：
 
 ~~~c
         case LEPT_NUMBER:
