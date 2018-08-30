@@ -243,7 +243,7 @@ TDD 是先写测试，再实现功能。好处是实现只会刚好满足测试�
 
 回到 leptjson 项目，`test.c` 包含了一个极简的单元测试框架：
 
-~~~
+~~~c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
