@@ -427,7 +427,7 @@ C 语言的标准库含有 [`assert()`](http://en.cppreference.com/w/c/error/ass
 
 例如上面的 `lept_parse_null()` 开始时，当前字符应该是 `'n'`，所以我们使用一个宏 `EXPECT(c, ch)` 进行断言，并跳到下一字符。
 
-初使用断言的同学，可能会错误地把含副作用的代码放在 `assert()` 中：
+初使用断言的同学，可能会错误地把含[副作用](https://en.wikipedia.org/wiki/Side_effect_(computer_science))的代码放在 `assert()` 中：
 
 ~~~c
 assert(x++ == 0); /* 这是错误的! */
