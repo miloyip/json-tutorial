@@ -20,7 +20,7 @@
 
 ## JSON 是什么
 
-JSON（JavaScript Object Notation）是一个用于数据交换的文本格式，现时的标准为[ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)。
+JSON（JavaScript Object Notation）是一个用于数据交换的文本格式，现时的标准为[ECMA-404](https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)。
 
 虽然 JSON 源至于 JavaScript 语言，但它只是一种数据格式，可用于任何编程语言。现时具类似功能的格式有 XML、YAML，当中以 JSON 的语法最为简单。
 
@@ -90,7 +90,7 @@ JSON（JavaScript Object Notation）是一个用于数据交换的文本格式�
 
 按 Configure，选择编译器，然后按 Generate 便会生成 Visual Studio 的 .sln 和 .vcproj 等文件。注意这个 build 目录都是生成的文件，可以随时删除，也不用上传至仓库。
 
-在 OS X 下，建议安装 [Homebrew](http://brew.sh/)，然后在命令行键入：
+在 OS X 下，建议安装 [Homebrew](https://brew.sh/)，然后在命令行键入：
 
 ~~~
 $ brew install cmake
@@ -226,7 +226,7 @@ true  = "true"
 
 许多同学在做练习题时，都是以 `printf`／`cout` 打印结果，再用肉眼对比结果是否乎合预期。但当软件项目越来越复杂，这个做法会越来越低效。一般我们会采用自动的测试方式，例如单元测试（unit testing）。单元测试也能确保其他人修改代码后，原来的功能维持正确（这称为回归测试／regression testing）。
 
-常用的单元测试框架有 xUnit 系列，如 C++ 的 [Google Test](https://github.com/google/googletest)、C# 的 [NUnit](http://www.nunit.org/)。我们为了简单起见，会编写一个极简单的单元测试方式。
+常用的单元测试框架有 xUnit 系列，如 C++ 的 [Google Test](https://github.com/google/googletest)、C# 的 [NUnit](https://www.nunit.org/)。我们为了简单起见，会编写一个极简单的单元测试方式。
 
 一般来说，软件开发是以周期进行的。例如，加入一个功能，再写关于该功能的单元测试。但也有另一种软件开发方法论，称为测试驱动开发（test-driven development, TDD），它的主要循环步骤是：
 
@@ -423,7 +423,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 断言（assertion）是 C 语言中常用的防御式编程方式，减少编程错误。最常用的是在函数开始的地方，检测所有参数。有时候也可以在调用函数后，检查上下文是否正确。
 
-C 语言的标准库含有 [`assert()`](http://en.cppreference.com/w/c/error/assert) 这个宏（需 `#include <assert.h>`），提供断言功能。当程序以 release 配置编译时（定义了 `NDEBUG` 宏），`assert()` 不会做检测；而当在 debug 配置时（没定义 `NDEBUG` 宏），则会在运行时检测 `assert(cond)` 中的条件是否为真（非 0），断言失败会直接令程序崩溃。
+C 语言的标准库含有 [`assert()`](https://en.cppreference.com/w/c/error/assert) 这个宏（需 `#include <assert.h>`），提供断言功能。当程序以 release 配置编译时（定义了 `NDEBUG` 宏），`assert()` 不会做检测；而当在 debug 配置时（没定义 `NDEBUG` 宏），则会在运行时检测 `assert(cond)` 中的条件是否为真（非 0），断言失败会直接令程序崩溃。
 
 例如上面的 `lept_parse_null()` 开始时，当前字符应该是 `'n'`，所以我们使用一个宏 `EXPECT(c, ch)` 进行断言，并跳到下一字符。
 

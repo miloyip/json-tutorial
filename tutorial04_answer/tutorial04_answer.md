@@ -25,7 +25,7 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
 }
 ~~~
 
-可能有同学想到用标准库的 [`strtol()`](http://en.cppreference.com/w/c/string/byte/strtol)，因为它也能解析 16 进制数字，那么可以简短的写成：
+可能有同学想到用标准库的 [`strtol()`](https://en.cppreference.com/w/c/string/byte/strtol)，因为它也能解析 16 进制数字，那么可以简短的写成：
 
 ~~~c
 static const char* lept_parse_hex4(const char* p, unsigned* u) {

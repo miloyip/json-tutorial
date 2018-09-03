@@ -64,7 +64,7 @@ number 是以十进制表示，它主要由 4 部分顺序组成：负号、整�
 
 JSON 可使用科学记数法，指数部分由大写 E 或小写 e 开始，然后可有正负号，之后是一或多个数字（0-9）。
 
-JSON 标准 [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf) 采用图的形式表示语法，也可以更直观地看到解析时可能经过的路径：
+JSON 标准 [ECMA-404](https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf) 采用图的形式表示语法，也可以更直观地看到解析时可能经过的路径：
 
 ![number](images/number.png)
 
@@ -151,7 +151,7 @@ static void test_parse_invalid_value() {
 
 # 5. 十进制转换至二进制
 
-我们需要把十进制的数字转换成二进制的 `double`。这并不是容易的事情 [2]。为了简单起见，leptjson 将使用标准库的 [`strtod()`](http://en.cppreference.com/w/c/string/byte/strtof) 来进行转换。`strtod()` 可转换 JSON 所要求的格式，但问题是，一些 JSON 不容许的格式，`strtod()` 也可转换，所以我们需要自行做格式校验。
+我们需要把十进制的数字转换成二进制的 `double`。这并不是容易的事情 [2]。为了简单起见，leptjson 将使用标准库的 [`strtod()`](https://en.cppreference.com/w/c/string/byte/strtof) 来进行转换。`strtod()` 可转换 JSON 所要求的格式，但问题是，一些 JSON 不容许的格式，`strtod()` 也可转换，所以我们需要自行做格式校验。
 
 ~~~c
 #include <stdlib.h>  /* NULL, strtod() */
@@ -201,7 +201,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 1. 重构合并 `lept_parse_null()`、`lept_parse_false()`、`lept_parse_true` 为 `lept_parse_literal()`。
 2. 加入 [维基百科双精度浮点数](https://en.wikipedia.org/wiki/Double-precision_floating-point_format#Double-precision_examples) 的一些边界值至单元测试，如 min subnormal positive double、max double 等。
 3. 去掉 `test_parse_invalid_value()` 和 `test_parse_root_not_singular` 中的 `#if 0 ... #endif`，执行测试，证实测试失败。按 JSON number 的语法在 lept_parse_number() 校验，不符合标准的程况返回 `LEPT_PARSE_INVALID_VALUE` 错误码。
-4. 去掉 `test_parse_number_too_big` 中的 `#if 0 ... #endif`，执行测试，证实测试失败。仔细阅读 [`strtod()`](http://en.cppreference.com/w/c/string/byte/strtof)，看看怎样从返回值得知数值是否过大，以返回 `LEPT_PARSE_NUMBER_TOO_BIG` 错误码。（提示：这里需要 `#include` 额外两个标准库头文件。）
+4. 去掉 `test_parse_number_too_big` 中的 `#if 0 ... #endif`，执行测试，证实测试失败。仔细阅读 [`strtod()`](https://en.cppreference.com/w/c/string/byte/strtof)，看看怎样从返回值得知数值是否过大，以返回 `LEPT_PARSE_NUMBER_TOO_BIG` 错误码。（提示：这里需要 `#include` 额外两个标准库头文件。）
 
 以上最重要的是第 3 条题目，就是要校验 JSON 的数字语法。建议可使用以下两个宏去简化一下代码：
 
@@ -228,6 +228,6 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 2. 科学计数法的指数部分没有对前导零作限制吗？`1E012` 也是合法的吗？
 
-   是的，这是合法的。JSON 源自于 JavaScript（[ECMA-262, 3rd edition](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)），数字语法取自 JavaScript 的十进位数字的语法（§7.8.3 Numeric Literals）。整数不容许前导零（leading zero），是因为更久的 JavaScript 版本容许以前导零来表示八进位数字，如 `052 == 42`，这种八进位常数表示方式来自于 [C 语言](http://en.cppreference.com/w/c/language/integer_constant)。禁止前导零避免了可能出现的歧义。但是在指数里就不会出现这个问题。多谢 @Smallay 提出及协助解答这个问题。
+   是的，这是合法的。JSON 源自于 JavaScript（[ECMA-262, 3rd edition](https://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)），数字语法取自 JavaScript 的十进位数字的语法（§7.8.3 Numeric Literals）。整数不容许前导零（leading zero），是因为更久的 JavaScript 版本容许以前导零来表示八进位数字，如 `052 == 42`，这种八进位常数表示方式来自于 [C 语言](https://en.cppreference.com/w/c/language/integer_constant)。禁止前导零避免了可能出现的歧义。但是在指数里就不会出现这个问题。多谢 @Smallay 提出及协助解答这个问题。
 
 其他常见问答将会从评论中整理。

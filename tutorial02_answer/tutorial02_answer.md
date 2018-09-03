@@ -157,7 +157,7 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
 }
 ~~~
 
-许多时候课本／书籍也不会把每个标准库功能说得很仔细，我想藉此提醒同学要好好看参考文档，学会读文档编程就简单得多！[cppreference.com](http://cppreference.com) 是 C/C++ 程序员的宝库。
+许多时候课本／书籍也不会把每个标准库功能说得很仔细，我想藉此提醒同学要好好看参考文档，学会读文档编程就简单得多！[cppreference.com](https://cppreference.com) 是 C/C++ 程序员的宝库。
 
 ## 5. 总结
 

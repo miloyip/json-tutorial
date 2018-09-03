@@ -225,7 +225,7 @@ static void* lept_context_pop(lept_context* c, size_t size) {
 
 压入时若空间不足，便回以 1.5 倍大小扩展。为什么是 1.5 倍而不是两倍？可参考我在 [STL 的 vector 有哪些封装上的技巧？](https://www.zhihu.com/question/25079705/answer/30030883) 的答案。
 
-注意到这里使用了 [`realloc()`](http://en.cppreference.com/w/c/memory/realloc) 来重新分配内存，`c->stack` 在初始化时为 `NULL`，`realloc(NULL, size)` 的行为是等价于 `malloc(size)` 的，所以我们不需要为第一次分配内存作特别处理。
+注意到这里使用了 [`realloc()`](https://en.cppreference.com/w/c/memory/realloc) 来重新分配内存，`c->stack` 在初始化时为 `NULL`，`realloc(NULL, size)` 的行为是等价于 `malloc(size)` 的，所以我们不需要为第一次分配内存作特别处理。
 
 另外，我们把初始大小以宏 `LEPT_PARSE_STACK_INIT_SIZE` 的形式定义，使用 `#ifndef X #define X ... #endif` 方式的好处是，使用者可在编译选项中自行设置宏，没设置的话就用缺省值。
 
