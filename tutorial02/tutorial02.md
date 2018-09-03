@@ -16,7 +16,7 @@
 7. [参考](#参考)
 8. [常见问题](#常见问题)
 
-# 1. 初探重构
+## 1. 初探重构
 
 在讨论解析数字之前，我们再补充 TDD 中的一个步骤──重构（refactoring）。根据[1]，重构是一个这样的过程：
 
@@ -45,7 +45,7 @@ static void test_parse_expect_value() {
 
 最后，我希望指出，软件的架构难以用单一标准评分，重构时要考虑平衡各种软件品质。例如上述把 3 个函数合并后，优点是减少重复的代码，维护较容易，但缺点可能是带来性能的少量影响。
 
-# 2. JSON 数字语法
+## 2. JSON 数字语法
 
 回归正题，本单元的重点在于解析 JSON number 类型。我们先看看它的语法：
 
@@ -70,7 +70,7 @@ JSON 标准 [ECMA-404](https://www.ecma-international.org/publications/files/ECM
 
 上一单元的 null、false、true 在解析后，我们只需把它们存储为类型。但对于数字，我们要考虑怎么存储解析后的结果。
 
-# 3. 数字表示方式
+## 3. 数字表示方式
 
 从 JSON 数字的语法，我们可能直观地会认为它应该表示为一个浮点数（floating point number），因为它带有小数和指数部分。然而，标准中并没有限制数字的范围或精度。为简单起见，leptjson 选择以双精度浮点数（C 中的 `double` 类型）来存储 JSON 数字。
 
@@ -94,7 +94,7 @@ double lept_get_number(const lept_value* v) {
 
 使用者应确保类型正确，才调用此 API。我们继续使用断言来保证。
 
-# 4. 单元测试
+## 4. 单元测试
 
 我们定义了 API 之后，按照 TDD，我们可以先写一些单元测试。这次我们使用多行的宏的减少重复代码：
 
@@ -149,7 +149,7 @@ static void test_parse_invalid_value() {
 }
 ~~~
 
-# 5. 十进制转换至二进制
+## 5. 十进制转换至二进制
 
 我们需要把十进制的数字转换成二进制的 `double`。这并不是容易的事情 [2]。为了简单起见，leptjson 将使用标准库的 [`strtod()`](https://en.cppreference.com/w/c/string/byte/strtof) 来进行转换。`strtod()` 可转换 JSON 所要求的格式，但问题是，一些 JSON 不容许的格式，`strtod()` 也可转换，所以我们需要自行做格式校验。
 
@@ -192,7 +192,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 }
 ~~~
 
-# 6. 总结与练习
+## 6. 总结与练习
 
 本单元讲述了 JSON 数字类型的语法，以及 leptjson 所采用的自行校验＋`strtod()`转换为 `double` 的方案。实际上一些 JSON 库会采用更复杂的方案，例如支持 64 位带符号／无符号整数，自行实现转换。以我的个人经验，解析／生成数字类型可以说是 RapidJSON 中最难实现的部分，也是 RapidJSON 高效性能的原因，有机会再另外撰文解释。
 
@@ -214,13 +214,13 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 如果你遇到问题，有不理解的地方，或是有建议，都欢迎在评论或 [issue](https://github.com/miloyip/json-tutorial/issues) 中提出，让所有人一起讨论。
 
-# 7. 参考
+## 7. 参考
 
 [1] Fowler, Martin. Refactoring: improving the design of existing code. Pearson Education India, 2009. 中译本：《重构：改善既有代码的设计》，熊节译，人民邮电出版社，2010年。
 
 [2] Gay, David M. "Correctly rounded binary-decimal and decimal-binary conversions." Numerical Analysis Manuscript 90-10 (1990).
 
-# 8. 常见问题
+## 8. 常见问题
 
 1. 为什么要把一些测试代码以 `#if 0 ... #endif` 禁用？
 
