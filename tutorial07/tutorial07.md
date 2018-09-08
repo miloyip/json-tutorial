@@ -7,7 +7,7 @@
 
 本单元内容：
 
-1. [JSON 生成器](#1-JSON-生成器)
+1. [JSON 生成器](#1-json-生成器)
 2. [再利用 lept_context 做动态数组](#2-再利用-lept_context-做动态数组)
 3. [生成 null、false 和 true](#3-生成-nullfalse-和-true)
 4. [生成数字](#4-生成数字)
