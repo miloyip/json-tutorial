@@ -156,7 +156,7 @@ leptjson 重复利用了 `lept_context` 中的数据结构作为输出缓冲，�
 
 1. 由于有两个地方需要生成字符串（JSON 字符串和对象类型），所以先实现 `lept_stringify_string()`。注意，字符串的语法比较复杂，一些字符必须转义，其他少于 `0x20` 的字符需要转义为 `\u00xx` 形式。
 
-2. 直接在 `lept_stringify_value()` 的 `switch` 内实现 JSON 数组和对象类型的生成。这些实现里都会递归调用 `lept_stringify_value()` 。
+2. 直接在 `lept_stringify_value()` 的 `switch` 内实现 JSON 数组和对象类型的生成。这些实现里都会递归调用 `lept_stringify_value()`。
 
 3. 在你的 `lept_stringify_string()` 是否使用了多次 `PUTC()`？如果是，它每次输出一个字符时，都要检测缓冲区是否有足够空间（不够时需扩展）。能否优化这部分的性能？这种优化有什么代价么？
 
