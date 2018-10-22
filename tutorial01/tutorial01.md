@@ -195,7 +195,7 @@ lept_type lept_get_type(const lept_value* v);
 
 ## 4. JSON 语法子集
 
-下面是此单元的 JSON 语法子集，使用 [RFC7159](http://rfc7159.net/rfc7159) 中的 [ABNF](https://tools.ietf.org/html/rfc5234) 表示：
+下面是此单元的 JSON 语法子集，使用 [RFC7159](https://tools.ietf.org/html/rfc7159) 中的 [ABNF](https://tools.ietf.org/html/rfc5234) 表示：
 
 ~~~
 JSON-text = ws value ws
