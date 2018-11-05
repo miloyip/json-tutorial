@@ -62,6 +62,11 @@ int lept_parse(lept_value* v, const char* json) {
     v->type = LEPT_NULL;
     lept_parse_whitespace(&c);
     status = lept_parse_value(&c, v);
+    /* 
+        解析之后，在检查在空白（值后面的空白）之后还有其他字符，
+        而不是在每个解析函数中检查，
+        这样（函数结构和逻辑上）更简洁
+     */
     lept_parse_whitespace(&c);
     if (status == LEPT_PARSE_OK && *c.json != '\0') {
         status = LEPT_PARSE_ROOT_NOT_SINGULAR;
