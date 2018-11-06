@@ -10,6 +10,7 @@ typedef struct {
 
 static void lept_parse_whitespace(lept_context* c) {
     const char *p = c->json;
+    //遍历空白符，直到遇到第一个非空白符
     while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r')
         p++;
     c->json = p;
@@ -19,6 +20,8 @@ static int lept_parse_true(lept_context* c, lept_value* v) {
     EXPECT(c, 't');
     if (c->json[0] != 'r' || c->json[1] != 'u' || c->json[2] != 'e')
         return LEPT_PARSE_INVALID_VALUE;
+    
+    // 更新指针
     c->json += 3;
     v->type = LEPT_TRUE;
     return LEPT_PARSE_OK;
@@ -28,6 +31,8 @@ static int lept_parse_false(lept_context* c, lept_value* v) {
     EXPECT(c, 'f');
     if (c->json[0] != 'a' || c->json[1] != 'l' || c->json[2] != 's' || c->json[3] != 'e')
         return LEPT_PARSE_INVALID_VALUE;
+
+    // 更新指针
     c->json += 4;
     v->type = LEPT_FALSE;
     return LEPT_PARSE_OK;
@@ -37,6 +42,8 @@ static int lept_parse_null(lept_context* c, lept_value* v) {
     EXPECT(c, 'n');
     if (c->json[0] != 'u' || c->json[1] != 'l' || c->json[2] != 'l')
         return LEPT_PARSE_INVALID_VALUE;
+
+    // 更新指针
     c->json += 3;
     v->type = LEPT_NULL;
     return LEPT_PARSE_OK;
@@ -59,6 +66,8 @@ int lept_parse(lept_value* v, const char* json) {
     c.json = json;
     v->type = LEPT_NULL;
     lept_parse_whitespace(&c);
+
+    // 解析 在一个值之后，空白之后还有其它字符
     if ((ret = lept_parse_value(&c, v)) == LEPT_PARSE_OK) {
         lept_parse_whitespace(&c);
         if (*c.json != '\0')
