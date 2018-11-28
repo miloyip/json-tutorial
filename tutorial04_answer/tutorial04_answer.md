@@ -25,7 +25,7 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
 }
 ~~~
 
-可能有同学想到用标准库的 [`strtol()`](http://en.cppreference.com/w/c/string/byte/strtol)，因为它也能解析 16 进制数字，那么可以简短的写成：
+可能有同学想到用标准库的 [`strtol()`](https://en.cppreference.com/w/c/string/byte/strtol)，因为它也能解析 16 进制数字，那么可以简短的写成：
 
 ~~~c
 static const char* lept_parse_hex4(const char* p, unsigned* u) {
@@ -35,7 +35,7 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
 }
 ~~~
 
-但这个实现会错误地接受 `"\u 123"` 这种不合法的 JSON，因为 `strtol()` 会跳过开始的空白。要解决的话，还需要检测第一个字符是否 `[0-9A-Fa-f]`，或者 `!isspace(*p)`。但为了 `strtol()` 做多余的检测，而且自行实现也很简单，我个人会选择首个方案。（前两个单元用 `strtod()` 就没辨法，因为它的实现要复杂得多。）
+但这个实现会错误地接受 `"\u 123"` 这种不合法的 JSON，因为 `strtol()` 会跳过开始的空白。要解决的话，还需要检测第一个字符是否 `[0-9A-Fa-f]`，或者 `!isspace(*p)`。但为了 `strtol()` 做多余的检测，而且自行实现也很简单，我个人会选择首个方案。（前两个单元用 `strtod()` 就没办法，因为它的实现要复杂得多。）
 
 ## 2. 实现 `lept_encode_utf8()`
 

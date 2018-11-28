@@ -184,7 +184,7 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
 
 但这种 bug 有时可能在简单测试中不能自动发现，因为问题只有堆栈满了才会出现。从测试的角度看，我们需要一些压力测试（stress test），测试更大更复杂的数据。但从编程的角度看，我们要谨慎考虑变量的生命周期，尽量从编程阶段避免出现问题。例如把 `lept_context_push()` 的 API 改为：
 
-~~~
+~~~c
 static void lept_context_push(lept_context* c, const void* data, size_t size);
 ~~~
 

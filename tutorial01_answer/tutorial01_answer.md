@@ -69,7 +69,7 @@ static void test_parse() {
 }
 ~~~
 
-但要记得在上一级的测试函数 `test_parse()` 调用这函数，否则会不起作用。还好如果我们记得用 `static` 修饰这两个函数，编译器会发出告警：
+但要记得在上一级的测试函数 `test_parse()` 调用这函数，否则会不起作用。还好如果我们记得用 `static` 修饰这两个函数，编译器会发出警告：
 
 ~~~
 test.c:30:13: warning: unused function 'test_parse_true' [-Wunused-function]

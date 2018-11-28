@@ -105,7 +105,7 @@ Object dump complete.
 
 ## 1B. Linux/OSX 下的内存泄漏检测方法
 
-在 Linux、OS X 下，我们可以使用 [valgrind](http://valgrind.org/) 工具（用 `apt-get install valgrind`、 `brew install valgrind`）。我们完全不用修改代码，只要在命令行执行：
+在 Linux、OS X 下，我们可以使用 [valgrind](https://valgrind.org/) 工具（用 `apt-get install valgrind`、 `brew install valgrind`）。我们完全不用修改代码，只要在命令行执行：
 
 ~~~
 $ valgrind --leak-check=full  ./leptjson_test

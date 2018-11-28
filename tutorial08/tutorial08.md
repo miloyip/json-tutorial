@@ -5,6 +5,15 @@
 
 本文是[《从零开始的 JSON 库教程》](https://zhuanlan.zhihu.com/json-tutorial)的第八个单元。代码位于 [json-tutorial/tutorial08](https://github.com/miloyip/json-tutorial/blob/master/tutorial08)。
 
+本单元内容：
+
+1. [对象键值查询](#1-对象键值查询)
+2. [相等比较](#2-相等比较)
+3. [复制、移动与交换](#3-复制移动与交换)
+4. [动态数组](#4-动态数组)
+5. [动态对象](#5-动态对象)
+6. [总结与练习](#6-总结与练习)
+
 ## 1. 对象键值查询
 
 我们在第六个单元实现了 JSON 对象的数据结构，它仅为一个 `lept_value` 的数组：
