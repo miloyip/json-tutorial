@@ -1,7 +1,7 @@
 #include "leptjson.h"
 #include <assert.h>  /* assert() */
 #include <stdlib.h>  /* NULL */
-
+#include <ctype.h>
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
 
 typedef struct {
@@ -10,7 +10,7 @@ typedef struct {
 
 static void lept_parse_whitespace(lept_context* c) {
     const char *p = c->json;
-    while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r')
+    while (isspace(*p))
         p++;
     c->json = p;
 }
