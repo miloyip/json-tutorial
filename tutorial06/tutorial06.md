@@ -7,7 +7,7 @@
 
 本单元内容：
 
-1. [JSON 对象](#1-JSON-对象)
+1. [JSON 对象](#1-json-对象)
 2. [数据结构](#2-数据结构)
 3. [重构字符串解析](#3-重构字符串解析)
 4. [实现](#4-实现)
@@ -26,19 +26,19 @@ object = %x7B ws [ member *( ws %x2C ws member ) ] ws %x7D
 
 要表示键值对的集合，有很多数据结构可供选择，例如：
 
-* 动态数组（dynamic array）：可扩展容量的数组，如 C++ 的 [`std::vector`](http://en.cppreference.com/w/cpp/container/vector)。
+* 动态数组（dynamic array）：可扩展容量的数组，如 C++ 的 [`std::vector`](https://en.cppreference.com/w/cpp/container/vector)。
 * 有序动态数组（sorted dynamic array）：和动态数组相同，但保证元素已排序，可用二分搜寻查询成员。
-* 平衡树（balanced tree）：平衡二叉树可有序地遍历成员，如红黑树和 C++ 的 [`std::map`](http://en.cppreference.com/w/cpp/container/map)（[`std::multi_map`](http://en.cppreference.com/w/cpp/container/multimap) 支持重复键）。
-* 哈希表（hash table）：通过哈希函数能实现平均 O(1) 查询，如 C++11 的 [`std::unordered_map`](http://en.cppreference.com/w/cpp/container/unordered_map)（[`unordered_multimap`](http://en.cppreference.com/w/cpp/container/unordered_multimap) 支持重复键）。
+* 平衡树（balanced tree）：平衡二叉树可有序地遍历成员，如红黑树和 C++ 的 [`std::map`](https://en.cppreference.com/w/cpp/container/map)（[`std::multi_map`](https://en.cppreference.com/w/cpp/container/multimap) 支持重复键）。
+* 哈希表（hash table）：通过哈希函数能实现平均 O(1) 查询，如 C++11 的 [`std::unordered_map`](https://en.cppreference.com/w/cpp/container/unordered_map)（[`unordered_multimap`](https://en.cppreference.com/w/cpp/container/unordered_multimap) 支持重复键）。
 
 设一个对象有 n 个成员，数据结构的容量是 m，n ⩽ m，那么一些常用操作的时间／空间复杂度如下：
 
-|               |动态数组 |有序动态数组|平衡树    |哈希表                |  
-|---------------|:-------:|:----------:|:--------:|:--------------------:|  
+|               |动态数组 |有序动态数组|平衡树    |哈希表                |
+|---------------|:-------:|:----------:|:--------:|:--------------------:|
 |有序           |否       |是          |是        |否                    |
 |自定成员次序   |可       |否          |否        |否                    |
 |初始化 n 个成员|O(n)     |O(n log n)  |O(n log n)|平均 O(n)、最坏 O(n^2)|
-|加入成员       |分摊 O(1)|O(n)        |O(log n)  |平均 O(1)、最坏 O(n)  |  
+|加入成员       |分摊 O(1)|O(n)        |O(log n)  |平均 O(1)、最坏 O(n)  |
 |移除成员       |O(n)     |O(n)        |O(log n)  |平均 O(1)、最坏 O(n)  |
 |查询成员       |O(n)     |O(log n)    |O(log n)  |平均 O(1)、最坏 O(n)  |
 |遍历成员       |O(n)     |O(n)        |O(n)      |O(m)                  |
