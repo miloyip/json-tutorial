@@ -393,8 +393,8 @@ void lept_remove_object_value(lept_value* v, size_t index);
 本单元练习内容：
 
 1. 完成 `lept_is_equal()` 里的对象比较部分。不需要考虑对象内有重复键的情况。
-2. 打开 `test_array_access()` 里的 `#if 0`，实现 `lept_insert_array_element()`、`lept_erase_array_element()` 和 `lept_clear_array()`。
-3. 打开 `test_object_access()` 里的 `#if 0`，参考动态数组，实现第 5 部分列出的所有函数。
+2. 打开 `test_access_array()` 里的 `#if 0`，实现 `lept_insert_array_element()`、`lept_erase_array_element()` 和 `lept_clear_array()`。
+3. 打开 `test_access_object()` 里的 `#if 0`，参考动态数组，实现第 5 部分列出的所有函数。
 4. 完成 `lept_copy()` 里的数组和对象的复制部分。
 
 如果你遇到问题，有不理解的地方，或是有建议，都欢迎在评论或 [issue](https://github.com/miloyip/json-tutorial/issues) 中提出，让所有人一起讨论。
