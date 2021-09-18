@@ -7,9 +7,7 @@ static int main_ret = 0;
 static int test_count = 0;
 static int test_pass = 0;
 
-/**
- * test git
- */
+
 
 #define EXPECT_EQ_BASE(equality, expect, actual, format) \
     do {\
