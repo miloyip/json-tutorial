@@ -1,6 +1,9 @@
 #include "leptjson.h"
 #include <assert.h>  /* assert() */
 #include <stdlib.h>  /* NULL, strtod() */
+#include <errno.h>
+#include <string.h>
+#include <math.h>
 
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
 #define ISDIGIT0(ch) ((ch) >= '0' && (ch) <= '9')
@@ -42,6 +45,9 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
     char* end;
     /* \TODO validate number */
     v->n = strtod(c->json, &end);
+    //范围过大并且INF, inf这些宏在C语言里头是合法的，但是在JSON里头是INVALID的，所以解析结果会不一样
+    if((*c->json != 'i' && *c->json != 'I') && (v->n == HUGE_VAL || v->n == HUGE_VALF || v->n == HUGE_VALL
+    || v->n == -HUGE_VALL || v->n == -HUGE_VAL || v->n == -HUGE_VALF)) return LEPT_PARSE_NUMBER_TOO_BIG;
     if (c->json == end)
         return LEPT_PARSE_INVALID_VALUE;
     //开头的非法字符
@@ -58,7 +64,6 @@ static int lept_parse_number(lept_context* c, lept_value* v) {
         if(*c->json == '\0') return LEPT_PARSE_INVALID_VALUE;
     }
     while(ISDIGIT0(*c->json)) c->json++;
-
     c->json = end;
     v->type = LEPT_NUMBER;
     return LEPT_PARSE_OK;
