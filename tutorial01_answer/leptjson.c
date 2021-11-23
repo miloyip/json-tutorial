@@ -36,6 +36,8 @@ static int lept_parse_literal(lept_context * c, lept_value * v, char prefix){
     return LEPT_PARSE_OK;
 }
 
+static int lept_parse_number()
+
 static int lept_parse_value(lept_context* c, lept_value* v) {
     switch (*c->json) {
         case 't':  return lept_parse_literal(c, v, 't');
