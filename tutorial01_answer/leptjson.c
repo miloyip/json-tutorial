@@ -36,7 +36,12 @@ static int lept_parse_literal(lept_context * c, lept_value * v, char prefix){
     return LEPT_PARSE_OK;
 }
 
-static int lept_parse_number()
+static int lept_parse_number(lept_context * c, lept_value * v){
+    if(*c->json == '+') {
+        return LEPT_PARSE_INVALID_VALUE;
+    }
+    return LEPT_PARSE_OK;
+}
 
 static int lept_parse_value(lept_context* c, lept_value* v) {
     switch (*c->json) {
@@ -44,7 +49,7 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
         case 'f':  return lept_parse_literal(c, v, 'f');
         case 'n':  return lept_parse_literal(c, v, 'n');
         case '\0': return LEPT_PARSE_EXPECT_VALUE;
-        default:   return LEPT_PARSE_INVALID_VALUE;
+        default:   return lept_parse_number(c, v); //for numbers
     }
 }
 

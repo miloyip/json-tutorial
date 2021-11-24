@@ -44,10 +44,11 @@ static int lept_parse_literal(lept_context * c, lept_value * v, char prefix){
 static int lept_parse_number(lept_context* c, lept_value* v) {
     char* end;
     /* \TODO validate number */
+    //errno是记录系统中存在错误的变量，只有当库函数出错的时候才会出现，设置为其他值代表不同的错误
+    errno = 0;
     v->n = strtod(c->json, &end);
     //范围过大并且INF, inf这些宏在C语言里头是合法的，但是在JSON里头是INVALID的，所以解析结果会不一样
-    if((*c->json != 'i' && *c->json != 'I') && (v->n == HUGE_VAL || v->n == HUGE_VALF || v->n == HUGE_VALL
-    || v->n == -HUGE_VALL || v->n == -HUGE_VAL || v->n == -HUGE_VALF)) return LEPT_PARSE_NUMBER_TOO_BIG;
+    if(errno == ERANGE && (v->n == HUGE_VAL || v->n == -HUGE_VAL)) return LEPT_PARSE_NUMBER_TOO_BIG;
     if (c->json == end)
         return LEPT_PARSE_INVALID_VALUE;
     //开头的非法字符
