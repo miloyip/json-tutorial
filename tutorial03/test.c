@@ -208,6 +208,7 @@ static void test_access_number() {
     lept_set_number(&v, 114514);
     EXPECT_EQ_INT(LEPT_NUMBER, lept_get_type(&v));
     EXPECT_EQ_DOUBLE(114514, lept_get_number(&v));
+
 }
 
 static void test_access_string() {
