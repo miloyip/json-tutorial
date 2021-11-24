@@ -194,15 +194,20 @@ static void test_access_boolean() {
     lept_init(&v);
     //由于C没有bool型，所以使用int
     lept_set_boolean(&v, 1);
-    EXPECT_EQ_INT(LEPT_TRUE, lept_get_type(&v));
+    EXPECT_EQ_INT(LEPT_TRUE, lept_get_boolean(&v));
     lept_set_boolean(&v, 0);
-    EXPECT_EQ_INT(LEPT_FALSE, lept_get_type(&v));
+    EXPECT_EQ_INT(LEPT_FALSE, lept_get_boolean(&v));
     lept_set_null(&v);
     EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));
 }
 
 static void test_access_number() {
     /* \TODO */
+    lept_value v;
+    lept_init(&v);
+    lept_set_number(&v, 114514);
+    EXPECT_EQ_INT(LEPT_NUMBER, lept_get_type(&v));
+    EXPECT_EQ_DOUBLE(114514, lept_get_number(&v));
 }
 
 static void test_access_string() {
