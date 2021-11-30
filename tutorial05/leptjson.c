@@ -138,7 +138,7 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
         switch (ch) {
             case '\"':
                 len = c->top - head;
-                //将栈上的3个字符弹出，分配内存，生成字符串值
+                //将栈上的所有字符弹出，分配内存，生成字符串值
                 lept_set_string(v, (const char*)lept_context_pop(c, len), len);
                 c->json = p;
                 return LEPT_PARSE_OK;
@@ -199,7 +199,7 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
     for (;;) {
         lept_value e; //生成一个临时的元素值
         lept_init(&e);
-        lept_parse_whitespace(c);
+
         //使用了递归函数来解决无限嵌套的JSON的问题
         //array只是指定了'[',']'里面的元素的内容还是属于字面值或者数字，字符串等的
         if ((ret = lept_parse_value(c, &e)) != LEPT_PARSE_OK)
@@ -207,8 +207,11 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
         //将产生的对象压栈,这是个元素大小不确定的堆栈
         memcpy(lept_context_push(c, sizeof(lept_value)), &e, sizeof(lept_value));
         size++;
-        if (*c->json == ',')
+        lept_parse_whitespace(c);
+        if (*c->json == ',') {
             c->json++;
+            lept_parse_whitespace(c);
+        }
         else if (*c->json == ']') {
             c->json++;
             v->type = LEPT_ARRAY;
