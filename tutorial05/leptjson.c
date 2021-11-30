@@ -9,6 +9,7 @@
 #include <stdlib.h>  /* NULL, malloc(), realloc(), free(), strtod() */
 #include <string.h>  /* memcpy() */
 
+
 #ifndef LEPT_PARSE_STACK_INIT_SIZE
 #define LEPT_PARSE_STACK_INIT_SIZE 256
 #endif
@@ -202,8 +203,9 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
 
         //使用了递归函数来解决无限嵌套的JSON的问题
         //array只是指定了'[',']'里面的元素的内容还是属于字面值或者数字，字符串等的
-        if ((ret = lept_parse_value(c, &e)) != LEPT_PARSE_OK)
-            return ret;
+        if ((ret = lept_parse_value(c, &e)) != LEPT_PARSE_OK) {
+            break;
+        }
         //将产生的对象压栈,这是个元素大小不确定的堆栈
         memcpy(lept_context_push(c, sizeof(lept_value)), &e, sizeof(lept_value));
         size++;
@@ -219,11 +221,18 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
             size *= sizeof(lept_value);
             //已经解析结束了，我们将堆栈中的临时值取出来，分配内存
             memcpy(v->u.a.e = (lept_value*)malloc(size), lept_context_pop(c, size), size);
+            //malloc从堆中获取内存，当使用完成之后记得free
             return LEPT_PARSE_OK;
         }
-        else
-            return LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET;
+        else {
+            ret = LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET;
+            break;
+        }
     }
+    //只有存在错误的时候才需要free
+    for(int i = 0; i < size; i++)
+        lept_free((lept_value*)lept_context_pop(c, sizeof(lept_value)));
+    return ret;
 }
 
 static int lept_parse_value(lept_context* c, lept_value* v) {
@@ -263,8 +272,16 @@ void lept_free(lept_value* v) {
     assert(v != NULL);
     if (v->type == LEPT_STRING)
         free(v->u.s.s);
+    //数组内的元素需要递归释放内存
+    else if(v->type == LEPT_ARRAY){
+        for(int i = 0; i < v->u.a.size; i++){
+            lept_free(&v->u.a.e[i]);
+        }
+        free(v->u.a.e);
+    }
     v->type = LEPT_NULL;
 }
+
 
 lept_type lept_get_type(const lept_value* v) {
     assert(v != NULL);
