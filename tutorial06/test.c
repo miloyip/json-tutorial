@@ -352,7 +352,7 @@ static void test_parse() {
     test_parse_number();
     test_parse_string();
     test_parse_array();
-#if 0
+#if 1
     test_parse_object();
 #endif
 
