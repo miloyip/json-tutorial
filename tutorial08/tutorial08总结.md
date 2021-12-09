@@ -82,7 +82,7 @@ void lept_reserve_object(lept_value* v, size_t capacity) {
 ```
 
 #### lept_shrink_object
-与`lept_shrink_object`差不多
+与`lept_shrink_array`差不多
 ```c++
 void lept_shrink_object(lept_value* v) {
     assert(v != NULL && v->type == LEPT_OBJECT);
