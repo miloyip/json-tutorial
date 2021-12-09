@@ -377,6 +377,7 @@ static void lept_stringify_string(lept_context* c, const char* s, size_t len) {
 }
 
 static void lept_stringify_value(lept_context* c, const lept_value* v) {
+    size_t i = 0;
     switch (v->type) {
         case LEPT_NULL:   PUTS(c, "null",  4); break;
         case LEPT_FALSE:  PUTS(c, "false", 5); break;
@@ -386,23 +387,22 @@ static void lept_stringify_value(lept_context* c, const lept_value* v) {
         case LEPT_ARRAY:
             /* ... */
             //递归处理聚合类型
-            size_t i = 0;
+            //all tests passed!
             PUTC(c, '[');
             for(; i < v->u.a.size; i++){
                 if(i > 0) PUTC(c, ',');
-                lept_stringify_value(c, v->u.a.e);
+                lept_stringify_value(c, &v->u.a.e[i]);
             }
             PUTC(c, ']');
             break;
         case LEPT_OBJECT:
             /* ... */
-            size_t i = 0;
             PUTC(c, '{');
             for(; i < v->u.o.size; i++){
                 if(i > 0) PUTC(c, ',');
-                lept_stringify_string(c, v->u.o.m.k, v->u.o.m.klen);
+                lept_stringify_string(c, v->u.o.m[i].k, v->u.o.m[i].klen);
                 PUTC(c, ':');
-                lept_stringify_value(c, v->u.o.m->v);
+                lept_stringify_value(c, &v->u.o.m[i].v);
             }
             PUTC(c, '}');
             break;

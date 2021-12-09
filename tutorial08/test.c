@@ -591,7 +591,7 @@ static void test_access_array() {
     for (i = 0; i < 6; i++)
         EXPECT_EQ_DOUBLE((double)i + 2, lept_get_number(lept_get_array_element(&a, i)));
 
-#if 0
+#if 1
     for (i = 0; i < 2; i++) {
         lept_init(&e);
         lept_set_number(&e, i);
@@ -626,7 +626,7 @@ static void test_access_array() {
 }
 
 static void test_access_object() {
-#if 0
+#if 1
     lept_value o, v, *pv;
     size_t i, j, index;
 
