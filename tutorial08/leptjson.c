@@ -427,7 +427,6 @@ void lept_copy(lept_value* dst, const lept_value* src) {
             //数组
             lept_set_array(dst, src->u.a.size);
             for(i = 0; i < src->u.a.size; i++){
-                //使用深拷贝创建一份完全独立于原对象的对象
                 lept_copy(&dst->u.a.e[i], &src->u.a.e[i]);
             }
             dst->u.a.size = src->u.a.size;

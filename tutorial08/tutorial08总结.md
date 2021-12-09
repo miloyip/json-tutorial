@@ -152,3 +152,42 @@ void lept_remove_object_value(lept_value* v, size_t index) {
     lept_init(&v->u.o.m[v->u.o.size].v);
 }
 ```
+
+#### lept_copy
+```c++
+void lept_copy(lept_value* dst, const lept_value* src) {
+    assert(src != NULL && dst != NULL && src != dst);
+    size_t i;
+    switch (src->type) {
+        case LEPT_STRING:
+            lept_set_string(dst, src->u.s.s, src->u.s.len);
+            break;
+        case LEPT_ARRAY:
+            /* \todo */
+            //数组
+            lept_set_array(dst, src->u.a.size);
+            for(i = 0; i < src->u.a.size; i++){
+                lept_copy(&dst->u.a.e[i], &src->u.a.e[i]);
+            }
+            dst->u.a.size = src->u.a.size;
+            break;
+        case LEPT_OBJECT:
+            /* \todo */
+            //对象
+            lept_set_object(dst, src->u.o.size);
+
+            for(i = 0; i < src->u.o.size; i++){
+                //k
+                lept_value * val = lept_set_object_value(dst, src->u.o.m[i].k, src->u.o.m[i].klen);
+                //v
+                lept_copy(val, &src->u.o.m[i].v);
+            }
+            dst->u.o.size = src->u.o.size;
+            break;
+        default:
+            lept_free(dst);
+            memcpy(dst, src, sizeof(lept_value));
+            break;
+    }
+}
+```
