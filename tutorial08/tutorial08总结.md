@@ -16,7 +16,7 @@ https://www.zhihu.com/question/36370072/answer/68086634)
 3. 打开 test_access_object() 里的 #if 0，参考动态数组，实现第 5 部分列出的所有函数。
 4. 完成 lept_copy() 里的数组和对象的复制部分。
 
-### lept_copy(lept_value* dst, const lept_value* src)
+### lept_is_equal()
 对于`object`类型的每个对象，需要比较`klen`字段以及`k`字段，于是使用 `lept_find_object_index`来查找是否存在；
 接下来的`v`字段可以采用`lept_value`递归解析。
 ```c++
