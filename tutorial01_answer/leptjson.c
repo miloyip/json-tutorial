@@ -63,6 +63,7 @@ int lept_parse(lept_value* v, const char* json) {
         lept_parse_whitespace(&c);
         if (*c.json != '\0')
             ret = LEPT_PARSE_ROOT_NOT_SINGULAR;
+            v->type = LEPT_NULL;
     }
     return ret;
 }
