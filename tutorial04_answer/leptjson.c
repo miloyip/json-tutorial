@@ -104,24 +104,37 @@ static const char* lept_parse_hex4(const char* p, unsigned* u) {
     return p;
 }
 
+/**
+ * Code point <-> UTF-8 conversion
+ * --------------------------------------------------------------------------------
+ * First code point | Last code point |  Byte 1  |  Byte 2  |  Byte 3  |  Byte 4  |
+ *           U+0000 |           U+007F| 0xxxxxxx |
+ *           U+0080 |           U+07FF| 110xxxxx | 10xxxxxx |
+ *           U+0800 |           U+FFFF| 1110xxxx | 10xxxxxx | 10xxxxxx |
+ *          U+10000 |         U+10FFFF| 11110xxx | 10xxxxxx | 10xxxxxx | 10xxxxxx |
+ * --------------------------------------------------------------------------------
+ * * Reference: https://en.wikipedia.org/wiki/UTF-8
+ * @param c lept_context
+ * @param u unsigned int
+ */
 static void lept_encode_utf8(lept_context* c, unsigned u) {
     if (u <= 0x7F) 
-        PUTC(c, u & 0xFF);
+        PUTC(c, u & 0xFF); /* set Byte 1 */
     else if (u <= 0x7FF) {
-        PUTC(c, 0xC0 | ((u >> 6) & 0xFF));
-        PUTC(c, 0x80 | ( u       & 0x3F));
+        PUTC(c, 0xC0 | ((u >> 6) & 0xFF)); /* set Byte 1 */
+        PUTC(c, 0x80 | ( u       & 0x3F)); /* set Byte 2 */
     }
     else if (u <= 0xFFFF) {
-        PUTC(c, 0xE0 | ((u >> 12) & 0xFF));
-        PUTC(c, 0x80 | ((u >>  6) & 0x3F));
-        PUTC(c, 0x80 | ( u        & 0x3F));
+        PUTC(c, 0xE0 | ((u >> 12) & 0xFF)); /* set Byte 1 */
+        PUTC(c, 0x80 | ((u >>  6) & 0x3F)); /* set Byte 2 */
+        PUTC(c, 0x80 | ( u        & 0x3F)); /* set Byte 3 */
     }
     else {
         assert(u <= 0x10FFFF);
-        PUTC(c, 0xF0 | ((u >> 18) & 0xFF));
-        PUTC(c, 0x80 | ((u >> 12) & 0x3F));
-        PUTC(c, 0x80 | ((u >>  6) & 0x3F));
-        PUTC(c, 0x80 | ( u        & 0x3F));
+        PUTC(c, 0xF0 | ((u >> 18) & 0xFF)); /* set Byte 1 */
+        PUTC(c, 0x80 | ((u >> 12) & 0x3F)); /* set Byte 2 */
+        PUTC(c, 0x80 | ((u >>  6) & 0x3F)); /* set Byte 3 */
+        PUTC(c, 0x80 | ( u        & 0x3F)); /* set Byte 4 */
     }
 }
 
