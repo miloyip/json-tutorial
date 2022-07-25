@@ -1,1 +1,4 @@
 */build/
+.vscode/targets.log
+.gitignore
+.vscode/dryrun.log
