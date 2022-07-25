@@ -2,3 +2,5 @@
 .gitignore
 .vscode/*
 /build/*
+.vscode
+
