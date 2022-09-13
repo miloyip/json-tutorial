@@ -39,7 +39,7 @@ struct lept_member {
 size_t lept_get_object_size(const lept_value* v);
 const char* lept_get_object_key(const lept_value* v, size_t index);
 size_t lept_get_object_key_length(const lept_value* v, size_t index);
-lept_value* lept_get_object_value(lept_value* v, size_t index);
+lept_value* lept_get_object_value(const lept_value* v, size_t index);
 ~~~
 
 在实际使用时，我们许多时候需要查询一个键值是否存在，如存在，要获得其相应的值。我们可以提供一个函数，简单地用线性搜寻实现这个查询功能（时间复杂度 $\mathrm{O}(n)$）：
@@ -75,7 +75,7 @@ lept_free(&o);
 由于一般也是希望获取键对应的值，而不需要索引，我们再加入一个辅助函数，返回类型改为 `lept_value*`：
 
 ~~~c
-lept_value* lept_find_object_value(lept_value* v, const char* key, size_t klen) {
+lept_value* lept_find_object_value(const lept_value* v, const char* key, size_t klen) {
     size_t index = lept_find_object_index(v, key, klen);
     return index != LEPT_KEY_NOT_EXIST ? &v->u.o.m[index].v : NULL;
 }
