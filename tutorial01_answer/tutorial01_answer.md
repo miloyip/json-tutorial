@@ -79,7 +79,7 @@ static void test_parse_true() {
 
 因为 static 函数的意思是指，该函数只作用于编译单元中，那么没有被调用时，编译器是能发现的。
 
-### 3. true/false 解析
+## 3. true/false 解析
 
 这部分很简单，只要参考 `lept_parse_null()`，再写两个函数，然后在 `lept_parse_value` 按首字符分派。
 
