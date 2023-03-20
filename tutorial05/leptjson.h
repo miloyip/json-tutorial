@@ -2,6 +2,7 @@
 #define LEPTJSON_H__
 
 #include <stddef.h> /* size_t */
+#include <stdio.h>
 
 typedef enum { LEPT_NULL, LEPT_FALSE, LEPT_TRUE, LEPT_NUMBER, LEPT_STRING, LEPT_ARRAY, LEPT_OBJECT } lept_type;
 

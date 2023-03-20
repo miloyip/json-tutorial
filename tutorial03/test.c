@@ -107,7 +107,7 @@ static void test_parse_number() {
 static void test_parse_string() {
     TEST_STRING("", "\"\"");
     TEST_STRING("Hello", "\"Hello\"");
-#if 0
+#if 1
     TEST_STRING("Hello\nWorld", "\"Hello\\nWorld\"");
     TEST_STRING("\" \\ / \b \f \n \r \t", "\"\\\" \\\\ \\/ \\b \\f \\n \\r \\t\"");
 #endif
@@ -163,7 +163,7 @@ static void test_parse_missing_quotation_mark() {
 }
 
 static void test_parse_invalid_string_escape() {
-#if 0
+#if 1
     TEST_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE, "\"\\v\"");
     TEST_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE, "\"\\'\"");
     TEST_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE, "\"\\0\"");
@@ -172,7 +172,7 @@ static void test_parse_invalid_string_escape() {
 }
 
 static void test_parse_invalid_string_char() {
-#if 0
+#if 1
     TEST_ERROR(LEPT_PARSE_INVALID_STRING_CHAR, "\"\x01\"");
     TEST_ERROR(LEPT_PARSE_INVALID_STRING_CHAR, "\"\x1F\"");
 #endif
@@ -190,10 +190,25 @@ static void test_access_null() {
 static void test_access_boolean() {
     /* \TODO */
     /* Use EXPECT_TRUE() and EXPECT_FALSE() */
+    lept_value v;
+    lept_init(&v);
+    //由于C没有bool型，所以使用int
+    lept_set_boolean(&v, 1);
+    EXPECT_TRUE(LEPT_TRUE, lept_get_boolean(&v));
+    lept_set_boolean(&v, 0);
+    EXPECT_FALSE(LEPT_FALSE, lept_get_boolean(&v));
+    lept_set_null(&v);
+    EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));
 }
 
 static void test_access_number() {
     /* \TODO */
+    lept_value v;
+    lept_init(&v);
+    lept_set_number(&v, 114514);
+    EXPECT_EQ_INT(LEPT_NUMBER, lept_get_type(&v));
+    EXPECT_EQ_DOUBLE(114514, lept_get_number(&v));
+
 }
 
 static void test_access_string() {
