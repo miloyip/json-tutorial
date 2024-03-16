@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "leptjson.c"
 #include "leptjson.h"
 
 static int main_ret = 0;
