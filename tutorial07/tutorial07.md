@@ -40,23 +40,16 @@ char* lept_stringify(const lept_value* v, size_t* length);
 #define LEPT_PARSE_STRINGIFY_INIT_SIZE 256
 #endif
 
-int lept_stringify(const lept_value* v, char** json, size_t* length) {
+char* lept_stringify(const lept_value* v, size_t* length) {
     lept_context c;
-    int ret;
     assert(v != NULL);
-    assert(json != NULL);
     c.stack = (char*)malloc(c.size = LEPT_PARSE_STRINGIFY_INIT_SIZE);
     c.top = 0;
-    if ((ret = lept_stringify_value(&c, v)) != LEPT_STRINGIFY_OK) {
-        free(c.stack);
-        *json = NULL;
-        return ret;
-    }
+    lept_stringify_value(&c, v);
     if (length)
         *length = c.top;
     PUTC(&c, '\0');
-    *json = c.stack;
-    return LEPT_STRINGIFY_OK;
+    return c.stack;
 }
 ~~~
 
@@ -97,16 +90,21 @@ static void test_stringify() {
 ~~~c
 #define PUTS(c, s, len)     memcpy(lept_context_push(c, len), s, len)
 
-static int lept_stringify_value(lept_context* c, const lept_value* v) {
-    size_t i;
-    int ret;
+static void lept_stringify_value(lept_context* c, const lept_value* v) {
     switch (v->type) {
         case LEPT_NULL:   PUTS(c, "null",  4); break;
         case LEPT_FALSE:  PUTS(c, "false", 5); break;
         case LEPT_TRUE:   PUTS(c, "true",  4); break;
-        /* ... */
+        case LEPT_NUMBER: c->top -= 32 - sprintf(lept_context_push(c, 32), "%.17g", v->u.n); break;
+        case LEPT_STRING: lept_stringify_string(c, v->u.s.s, v->u.s.len); break;
+        case LEPT_ARRAY:
+            /* ... */
+            break;
+        case LEPT_OBJECT:
+            /* ... */
+            break;
+        default: assert(0 && "invalid type");
     }
-    return LEPT_STRINGIFY_OK;
 }
 ~~~
 
